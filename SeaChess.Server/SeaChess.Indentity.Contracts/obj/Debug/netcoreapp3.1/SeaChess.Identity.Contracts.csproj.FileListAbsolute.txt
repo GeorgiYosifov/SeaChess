@@ -15,3 +15,12 @@ C:\Users\Georgi\source\repos\SeaChess.Server\SeaChess.Indentity.Contracts\obj\De
 C:\Users\Georgi\source\repos\SeaChess.Server\SeaChess.Indentity.Contracts\obj\Debug\netcoreapp3.1\SeaChess.Identity.Contracts.csproj.CoreCompileInputs.cache
 C:\Users\Georgi\source\repos\SeaChess.Server\SeaChess.Indentity.Contracts\obj\Debug\netcoreapp3.1\SeaChess.Identity.Contracts.dll
 C:\Users\Georgi\source\repos\SeaChess.Server\SeaChess.Indentity.Contracts\obj\Debug\netcoreapp3.1\SeaChess.Identity.Contracts.pdb
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\SeaChess.Indentity.Contracts\bin\Debug\netcoreapp3.1\SeaChess.Identity.Contracts.deps.json
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\SeaChess.Indentity.Contracts\bin\Debug\netcoreapp3.1\SeaChess.Identity.Contracts.dll
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\SeaChess.Indentity.Contracts\bin\Debug\netcoreapp3.1\SeaChess.Identity.Contracts.pdb
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\SeaChess.Indentity.Contracts\obj\Debug\netcoreapp3.1\SeaChess.Identity.Contracts.csprojAssemblyReference.cache
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\SeaChess.Indentity.Contracts\obj\Debug\netcoreapp3.1\SeaChess.Identity.Contracts.AssemblyInfoInputs.cache
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\SeaChess.Indentity.Contracts\obj\Debug\netcoreapp3.1\SeaChess.Identity.Contracts.AssemblyInfo.cs
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\SeaChess.Indentity.Contracts\obj\Debug\netcoreapp3.1\SeaChess.Identity.Contracts.csproj.CoreCompileInputs.cache
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\SeaChess.Indentity.Contracts\obj\Debug\netcoreapp3.1\SeaChess.Identity.Contracts.dll
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\SeaChess.Indentity.Contracts\obj\Debug\netcoreapp3.1\SeaChess.Identity.Contracts.pdb

@@ -7,3 +7,12 @@ C:\Users\Georgi\source\repos\SeaChess.Server\Models\obj\Debug\netcoreapp3.1\Mode
 C:\Users\Georgi\source\repos\SeaChess.Server\Models\obj\Debug\netcoreapp3.1\Models.csproj.CoreCompileInputs.cache
 C:\Users\Georgi\source\repos\SeaChess.Server\Models\obj\Debug\netcoreapp3.1\Models.dll
 C:\Users\Georgi\source\repos\SeaChess.Server\Models\obj\Debug\netcoreapp3.1\Models.pdb
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\Models\bin\Debug\netcoreapp3.1\Models.deps.json
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\Models\bin\Debug\netcoreapp3.1\Models.dll
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\Models\bin\Debug\netcoreapp3.1\Models.pdb
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\Models\obj\Debug\netcoreapp3.1\Models.csprojAssemblyReference.cache
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\Models\obj\Debug\netcoreapp3.1\Models.AssemblyInfoInputs.cache
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\Models\obj\Debug\netcoreapp3.1\Models.AssemblyInfo.cs
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\Models\obj\Debug\netcoreapp3.1\Models.csproj.CoreCompileInputs.cache
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\Models\obj\Debug\netcoreapp3.1\Models.dll
+C:\Users\Georgi\source\repos\SeaChess\SeaChess.Server\Models\obj\Debug\netcoreapp3.1\Models.pdb

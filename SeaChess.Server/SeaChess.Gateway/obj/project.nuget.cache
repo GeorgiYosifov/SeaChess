@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "FeNmThAkDAdLmDTinyRJWGq4YFcSpkxfBlIa1kKVjmZeL71Z1RKOl4+RlmiazZ8P7R3J9h5cpl5wKBPHz9o8Lg==",
+  "dgSpecHash": "9KPAXIYk5w3bLo12Rf81HyyFyeTl4wSYDdYqewUTj25Evbign+PIhefZIlmMacR6NqB40FOgmkM9IKvyLN7fig==",
   "success": true,
   "projectFilePath": "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\SeaChess.Gateway\\SeaChess.Gateway.csproj",
   "expectedPackageFiles": [
@@ -42,8 +42,7 @@
     "C:\\Users\\Georgi\\.nuget\\packages\\system.identitymodel.tokens.jwt\\5.5.0\\system.identitymodel.tokens.jwt.5.5.0.nupkg.sha512",
     "C:\\Users\\Georgi\\.nuget\\packages\\system.io.pipelines\\4.7.2\\system.io.pipelines.4.7.2.nupkg.sha512",
     "C:\\Users\\Georgi\\.nuget\\packages\\system.security.cryptography.cng\\4.5.0\\system.security.cryptography.cng.4.5.0.nupkg.sha512",
-    "C:\\Users\\Georgi\\.nuget\\packages\\system.threading.channels\\4.7.1\\system.threading.channels.4.7.1.nupkg.sha512",
-    "C:\\Users\\Georgi\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
+    "C:\\Users\\Georgi\\.nuget\\packages\\system.threading.channels\\4.7.1\\system.threading.channels.4.7.1.nupkg.sha512"
   ],
   "logs": []
 }

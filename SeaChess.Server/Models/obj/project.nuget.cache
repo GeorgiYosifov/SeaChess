@@ -1,10 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1wL5J17JHXm9Q6ATORObZcOfPPw7WHVLquI0svlbIql0HJiPIWaejc4TU2pbpKFXy4YUDnkPMOryhre5emSINw==",
+  "dgSpecHash": "mDNU04CgXnc5mgDvC4mBh++FDKm6QGUfVIlRdZ4xhmA1vh5jCWCqve+vpdnMOh3dtMstpu98vxkgF46SY9m4pQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\Models\\Models.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\Georgi\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }
