@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-3">
+        <div class="inbox_people">
+            <div class="headind_srch">
+                <div class="recent_heading">
+                    <h4>Recent Active</h4>
+                </div>
+            </div>
+            <div id="activeList" class="inbox_chat">
+                <div *ngFor="let user of (homeService.users$ | async)" class="chat_list active_chat">
+                    <div class="chat_people">
+                        <div class="chat_img">
+                            <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+                        </div>
+                        <div class="chat_ib">
+                            <h4>{{user.email}}</h4>
+                            <h5>{{user.status}}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="homeService.showQueue;then content else other_content"></div>
+    <ng-template #content>
+        <div class="col-5">
+            <app-queue (hideContent)="homeService.showQueue"></app-queue>
+        </div>
+    </ng-template>
+    <ng-template #other_content></ng-template>
+    <div class="col-4"></div>
+</div>

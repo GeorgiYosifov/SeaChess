@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "SeaChess.Sdk.SampleApp/1.0.0": {
+        "dependencies": {
+          "SeaChess.Home.Contracts": "1.0.0"
+        },
+        "runtime": {
+          "SeaChess.Sdk.SampleApp.dll": {}
+        }
+      },
+      "SeaChess.Home.Contracts/1.0.0": {
+        "runtime": {
+          "SeaChess.Home.Contracts.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "SeaChess.Sdk.SampleApp/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SeaChess.Home.Contracts/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

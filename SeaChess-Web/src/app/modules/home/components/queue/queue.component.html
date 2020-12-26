@@ -1,0 +1,6 @@
+<h3>Users In Queue</h3>
+<ul class="list-group">
+    <div *ngFor="let user of (queueService.users$ | async)">
+        <li class="list-group-item">{{user.email}}</li>
+    </div>
+</ul>

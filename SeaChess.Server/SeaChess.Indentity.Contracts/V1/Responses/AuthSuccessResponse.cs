@@ -1,0 +1,9 @@
+﻿namespace SeaChess.Identity.Contracts.V1.Responses
+{
+    public class AuthSuccessResponse
+    {
+        public string Token { get; set; }
+
+        public string RefreshToken { get; set; }
+    }
+}
