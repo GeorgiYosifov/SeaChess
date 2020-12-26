@@ -1,7 +1,6 @@
 ﻿using SeaChess.Home.Contracts.V1;
 using SeaChess.Home.Contracts.V1.Requests;
 using SeaChess.Home.Contracts.V1.Responses;
-using SeaChess.Home.Data;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;

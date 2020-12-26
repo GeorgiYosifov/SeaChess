@@ -52,17 +52,12 @@ namespace SeaChess.Gateway
                 {
                     OnMessageReceived = context =>
                     {
-                        //var token = "";
-                        //if (context.Request.Headers.TryGetValue("Authorization", out var tokenObj))
-                        //{
-                        //    token = tokenObj.FirstOrDefault().Substring(7).ToString();
-                        //}
-
                         var token = context.Request.Query["access_token"];
 
                         // If the request is for our hub...
                         var path = context.HttpContext.Request.Path;
-                        if (!string.IsNullOrEmpty(token) && ((path.StartsWithSegments("/home") || path.StartsWithSegments("/matchMaker"))))
+                        if (!string.IsNullOrEmpty(token) 
+                            && ((path.StartsWithSegments("/home") || path.StartsWithSegments("/matchMaker") || path.StartsWithSegments("/game"))))
                         {
                             // Read the token out of the query string
                             context.Token = token;

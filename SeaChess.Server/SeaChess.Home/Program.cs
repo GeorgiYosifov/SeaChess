@@ -1,10 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SeaChess.Home.Data;
 
 namespace SeaChess.Home
 {
@@ -16,9 +13,9 @@ namespace SeaChess.Home
 
             using (var serviceScope = host.Services.CreateScope())
             {
-                var dbContext = serviceScope.ServiceProvider.GetRequiredService<DataContext>();
+                //var dbContext = serviceScope.ServiceProvider.GetRequiredService<DataContext>();
 
-                await dbContext.Database.MigrateAsync();
+                //await dbContext.Database.MigrateAsync();
 
                 //var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace SeaChess.Home.Data
+namespace SeaChess.Game.Data
 {
     public class DataContext : DbContext
     {
@@ -8,6 +8,10 @@ namespace SeaChess.Home.Data
             : base(options)
         {
         }
+
+        public DbSet<Playground> Playgrounds { get; set; }
+
+        public DbSet<Player> Players { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

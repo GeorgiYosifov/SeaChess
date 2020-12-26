@@ -1,10 +1,12 @@
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SeaChess.Game.Consumers;
+using SeaChess.Game.Data;
 using SeaChess.Game.Hubs;
 using SeaChess.Game.Services;
 
@@ -21,6 +23,9 @@ namespace SeaChess.Game
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<DataContext>(options =>
+                options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
+
             //services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped<IGameService, GameService>();
