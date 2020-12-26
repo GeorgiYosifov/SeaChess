@@ -10557,11 +10557,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\SeaChess.Home\\SeaChess.Home.csproj",
+      "projectUniqueName": "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\SeaChess.Home\\SeaChess.Home.csproj",
       "projectName": "SeaChess.Home",
-      "projectPath": "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\SeaChess.Home\\SeaChess.Home.csproj",
+      "projectPath": "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\SeaChess.Home\\SeaChess.Home.csproj",
       "packagesPath": "C:\\Users\\Georgi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\SeaChess.Home\\obj\\",
+      "outputPath": "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\SeaChess.Home\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -10579,15 +10579,16 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\Models\\Models.csproj": {
-              "projectPath": "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\Models\\Models.csproj"
+            "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\Models\\Models.csproj": {
+              "projectPath": "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\Models\\Models.csproj"
             },
-            "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\SeaChess.Home.Contracts\\SeaChess.Home.Contracts.csproj": {
-              "projectPath": "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\SeaChess.Home.Contracts\\SeaChess.Home.Contracts.csproj"
+            "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\SeaChess.Home.Contracts\\SeaChess.Home.Contracts.csproj": {
+              "projectPath": "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\SeaChess.Home.Contracts\\SeaChess.Home.Contracts.csproj"
             },
-            "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\SeaChess.Infrastructure\\SeaChess.Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\SeaChess.Infrastructure\\SeaChess.Infrastructure.csproj"
+            "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\SeaChess.Infrastructure\\SeaChess.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\SeaChess.Infrastructure\\SeaChess.Infrastructure.csproj"
             }
           }
         }
@@ -10600,6 +10601,7 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "AutoMapper": {
             "target": "Package",
@@ -10688,6 +10690,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[3.1.2, 3.1.2]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -10696,7 +10704,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100-rc.1.20452.10\\RuntimeIdentifierGraph.json"
       }
     }
   }

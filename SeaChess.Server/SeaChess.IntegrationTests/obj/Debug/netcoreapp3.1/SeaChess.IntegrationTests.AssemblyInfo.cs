@@ -12,10 +12,10 @@ using System;
 using System.Reflection;
 
 [assembly: Microsoft.AspNetCore.Identity.UI.UIFrameworkAttribute("Bootstrap4")]
-[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\Models", "Models.csproj", "0")]
-[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("SeaChess.Home.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\SeaChess.Home.Contracts", "SeaChess.Home.Contracts.csproj", "0")]
-[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("SeaChess.Home, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\SeaChess.Home", "SeaChess.Home.csproj", "0")]
-[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("SeaChess.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\SeaChess.Infrastructure", "SeaChess.Infrastructure.csproj", "0")]
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("Models, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\Models", "Models.csproj", "0")]
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("SeaChess.Home.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\SeaChess.Home.Contracts", "SeaChess.Home.Contracts.csproj", "0")]
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("SeaChess.Home, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\SeaChess.Home", "SeaChess.Home.csproj", "0")]
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("SeaChess.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\SeaChess.Infrastructure", "SeaChess.Infrastructure.csproj", "0")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("SeaChess.IntegrationTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]

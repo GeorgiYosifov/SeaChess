@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "IdQsHTwS/gHrdrRg5nWWn7SyYsIfczWTyBPOB84EDr0Ilb56HNdNLtrBahPcWTKRdWDsuAdpgzhTpY1FjNaY4g==",
+  "dgSpecHash": "+gtpEEst1Oi8TZr4ynKcsGWybAxy6dCM7jqpxS3hKB1mR0SqTC3tcbl6TXlUWE3EYAtYqEZBhsnPkl/C++W8NQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\SeaChess.MatchMaker\\SeaChess.MatchMaker.csproj",
+  "projectFilePath": "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\SeaChess.MatchMaker\\SeaChess.MatchMaker.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Georgi\\.nuget\\packages\\automatonymous\\5.0.2\\automatonymous.5.0.2.nupkg.sha512",
     "C:\\Users\\Georgi\\.nuget\\packages\\greenpipes\\4.0.0\\greenpipes.4.0.0.nupkg.sha512",
@@ -124,7 +124,8 @@
     "C:\\Users\\Georgi\\.nuget\\packages\\system.threading.timer\\4.3.0\\system.threading.timer.4.3.0.nupkg.sha512",
     "C:\\Users\\Georgi\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512",
     "C:\\Users\\Georgi\\.nuget\\packages\\system.xml.readerwriter\\4.3.1\\system.xml.readerwriter.4.3.1.nupkg.sha512",
-    "C:\\Users\\Georgi\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512"
+    "C:\\Users\\Georgi\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
+    "C:\\Users\\Georgi\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
   ],
   "logs": []
 }

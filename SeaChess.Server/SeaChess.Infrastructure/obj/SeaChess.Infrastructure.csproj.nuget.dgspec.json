@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\SeaChess.Infrastructure\\SeaChess.Infrastructure.csproj": {}
+    "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\SeaChess.Infrastructure\\SeaChess.Infrastructure.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\SeaChess.Infrastructure\\SeaChess.Infrastructure.csproj": {
+    "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\SeaChess.Infrastructure\\SeaChess.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\SeaChess.Infrastructure\\SeaChess.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\SeaChess.Infrastructure\\SeaChess.Infrastructure.csproj",
         "projectName": "SeaChess.Infrastructure",
-        "projectPath": "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\SeaChess.Infrastructure\\SeaChess.Infrastructure.csproj",
+        "projectPath": "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\SeaChess.Infrastructure\\SeaChess.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\Georgi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Georgi\\source\\repos\\SeaChess.Server\\SeaChess.Infrastructure\\obj\\",
+        "outputPath": "C:\\Users\\Georgi\\source\\repos\\SeaChess\\SeaChess.Server\\SeaChess.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -29,6 +29,7 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -40,6 +41,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Microsoft.AspNetCore.Mvc.Core": {
               "target": "Package",
@@ -56,12 +58,18 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.1.2, 3.1.2]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100-rc.1.20452.10\\RuntimeIdentifierGraph.json"
         }
       }
     }
