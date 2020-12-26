@@ -3,12 +3,10 @@ import * as signalR from '@aspnet/signalr';
 import { IHttpConnectionOptions } from '@aspnet/signalr';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { IRouterState } from 'src/app/+store/router.index';
 import * as fromHomeStore from 'src/app/modules/home/components/+store/home.index';
 import * as fromHomeSelector from 'src/app/modules/home/components/+store/home.selectors';
 import { IUser } from 'src/app/modules/shared/models/user-home';
 import { environment } from 'src/environments/environment';
-import { go } from '@ngrx/router-store';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +16,7 @@ export class QueueService {
     private hubConnection: signalR.HubConnection;
     public users$: Observable<IUser[]>;
 
-    constructor(private storeHome: Store<fromHomeStore.IHomeState>,
-        private storeRoute: Store<IRouterState>) { }
+    constructor(private storeHome: Store<fromHomeStore.IHomeState>) { }
 
     public startConnection() {
         const token = localStorage.getItem('token');
@@ -60,7 +57,7 @@ export class QueueService {
 
     public addSendUsersToGameListener() {
         this.hubConnection.on('SendUsersToGame', () => {
-            this.storeRoute.dispatch(go(['/home/game']));
+            //this.storeRoute.dispatch(go(['/home/game']));
         });
     }
 

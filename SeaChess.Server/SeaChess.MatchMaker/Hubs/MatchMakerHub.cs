@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.SignalR;
 using Models;
 using SeaChess.MatchMaker.Extensions;
-using SeaChess.MatchMaker.Services;
 using SeaChess.MatchMaker.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,12 +11,10 @@ namespace SeaChess.MatchMaker.Hubs
 {
     public class MatchMakerHub : Hub
     {
-        private readonly IMatchMakerService matchMakerService;
         private readonly IPublishEndpoint publishEndpoint;
 
-        public MatchMakerHub(IMatchMakerService matchMakerService, IPublishEndpoint publishEndpoint)
+        public MatchMakerHub(IPublishEndpoint publishEndpoint)
         {
-            this.matchMakerService = matchMakerService;
             this.publishEndpoint = publishEndpoint;
         }
 
@@ -38,24 +35,29 @@ namespace SeaChess.MatchMaker.Hubs
 
             if (selectedUser != null)
             {
-                await this.publishEndpoint.Publish<TransferSelectedUsersToGame>(new
-                {
-                    FirstUserId = selectedUser.Id,
-                    SecondUserId = lastUserInQueue.Id
-                });
+                var gameId = Guid.NewGuid().ToString();
 
-                await Groups.AddToGroupAsync(Context.ConnectionId, "Game1");
+                await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
 
                 foreach (var kvp in UserHandler.ConnectedIds)
                 {
                     if (selectedUser.Id == kvp.Value)
                     {
-                        await Groups.AddToGroupAsync(kvp.Key, "Game1");
+                        await Groups.AddToGroupAsync(kvp.Key, gameId);
                         break;
                     }
                 }
 
-                await this.Clients.Group("Game1").SendAsync("SendUsersToGame");
+                await this.publishEndpoint.Publish<TransferSelectedUsersToGame>(new
+                {
+                    GameId = gameId,   
+                    FirstUserId = selectedUser.Id,
+                    FirstUserEmail = selectedUser.Email,
+                    SecondUserId = lastUserInQueue.Id,
+                    SecondUserEmail = lastUserInQueue.Email,
+                });
+
+                await this.Clients.Group(gameId).SendAsync("SendUsersToGame");
             }
             else
             {

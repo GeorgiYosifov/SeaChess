@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaChess.MatchMaker", "SeaChess.MatchMaker\SeaChess.MatchMaker.csproj", "{88BFFD41-8F96-45DC-92E0-AEECC9E0D160}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaChess.Game", "SeaChess.Game\SeaChess.Game.csproj", "{42773A69-6D94-4E70-95BD-64D5A42B2143}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{88BFFD41-8F96-45DC-92E0-AEECC9E0D160}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88BFFD41-8F96-45DC-92E0-AEECC9E0D160}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88BFFD41-8F96-45DC-92E0-AEECC9E0D160}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42773A69-6D94-4E70-95BD-64D5A42B2143}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42773A69-6D94-4E70-95BD-64D5A42B2143}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42773A69-6D94-4E70-95BD-64D5A42B2143}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42773A69-6D94-4E70-95BD-64D5A42B2143}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

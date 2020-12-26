@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SeaChess.MatchMaker.Hubs;
+using SeaChess.Game.Consumers;
+using SeaChess.Game.Hubs;
+using SeaChess.Game.Services;
 
-namespace SeaChess.MatchMaker
+namespace SeaChess.Game
 {
     public class Startup
     {
@@ -21,15 +23,24 @@ namespace SeaChess.MatchMaker
         {
             //services.AddAutoMapper(typeof(Startup));
 
+            services.AddScoped<IGameService, GameService>();
+
             services.AddSignalR(options => options.EnableDetailedErrors = true);
 
             services.AddControllers();
 
             services.AddMassTransit(config =>
             {
+                config.AddConsumer<CreatePlaygroundConsumer>();
+
                 config.UsingRabbitMq((ctx, cfg) =>
                 {
                     cfg.Host("amqp://guest:guest@localhost:5672");
+
+                    cfg.ReceiveEndpoint("transferSelectedUsersToGame-queue", c =>
+                    {
+                        c.ConfigureConsumer<CreatePlaygroundConsumer>(ctx);
+                    });
                 });
             });
 
@@ -56,7 +67,7 @@ namespace SeaChess.MatchMaker
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<MatchMakerHub>("/matchMaker");
+                endpoints.MapHub<GameHub>("/game");
             });
         }
     }

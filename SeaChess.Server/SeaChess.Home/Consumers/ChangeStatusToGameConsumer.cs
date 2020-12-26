@@ -10,11 +10,11 @@ namespace SeaChess.Home.Consumers
 {
     public class ChangeStatusToGameConsumer : IConsumer<TransferSelectedUsersToGame>
     {
-        private readonly ILogger<LoginConsumer> logger;
+        private readonly ILogger<ChangeStatusToGameConsumer> logger;
         private readonly IHomeService homeService;
         private readonly IHubContext<HomeHub> homeHubContext;
 
-        public ChangeStatusToGameConsumer(ILogger<LoginConsumer> logger, IHomeService homeService, IHubContext<HomeHub> homeHubContext)
+        public ChangeStatusToGameConsumer(ILogger<ChangeStatusToGameConsumer> logger, IHomeService homeService, IHubContext<HomeHub> homeHubContext)
         {
             this.logger = logger;
             this.homeService = homeService;
