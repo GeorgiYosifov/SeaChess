@@ -9,7 +9,7 @@ namespace SeaChess.Game.Data
         {
         }
 
-        public DbSet<Playground> Playgrounds { get; set; }
+        public DbSet<Game> Games { get; set; }
 
         public DbSet<Player> Players { get; set; }
 

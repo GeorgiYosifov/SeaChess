@@ -36,17 +36,19 @@ namespace SeaChess.Game
 
             services.AddMassTransit(config =>
             {
-                config.AddConsumer<CreatePlaygroundConsumer>();
+                config.AddConsumer<CreateGameConsumer>();
 
-                config.UsingRabbitMq((ctx, cfg) =>
+                config.AddBus(context => Bus.Factory.CreateUsingRabbitMq(c =>
                 {
-                    cfg.Host("amqp://guest:guest@localhost:5672");
+                    c.Host("amqp://guest:guest@localhost:5672");
 
-                    cfg.ReceiveEndpoint("transferSelectedUsersToGame-queue", c =>
+                    c.ReceiveEndpoint("transferToGame-queue", e =>
                     {
-                        c.ConfigureConsumer<CreatePlaygroundConsumer>(ctx);
+                        //e.PrefetchCount = 16;
+                        //e.UseMessageRetry(r => r.Interval(2, 3000));
+                        e.ConfigureConsumer<CreateGameConsumer>(context);
                     });
-                });
+                }));
             });
 
             services.AddMassTransitHostedService();

@@ -11,11 +11,11 @@ namespace SeaChess.MatchMaker.Hubs
 {
     public class MatchMakerHub : Hub
     {
-        private readonly IPublishEndpoint publishEndpoint;
+        private readonly IRequestClient<TransferSelectedUsersToGame> client;
 
-        public MatchMakerHub(IPublishEndpoint publishEndpoint)
+        public MatchMakerHub(IRequestClient<TransferSelectedUsersToGame> client)
         {
-            this.publishEndpoint = publishEndpoint;
+            this.client = client;
         }
 
         public async Task SendedUsersFromState(IList<UserInQueueViewModel> users)
@@ -47,17 +47,20 @@ namespace SeaChess.MatchMaker.Hubs
                         break;
                     }
                 }
-
-                await this.publishEndpoint.Publish<TransferSelectedUsersToGame>(new
+                
+                var response = await client.GetResponse<SavedData>(new
                 {
-                    GameId = gameId,   
+                    GameId = gameId,
                     FirstUserId = selectedUser.Id,
                     FirstUserEmail = selectedUser.Email,
                     SecondUserId = lastUserInQueue.Id,
                     SecondUserEmail = lastUserInQueue.Email,
                 });
 
-                await this.Clients.Group(gameId).SendAsync("SendUsersToGame");
+                if (response.Message.Result)
+                {
+                    await this.Clients.Group(gameId).SendAsync("SendUsersToGame");
+                }
             }
             else
             {

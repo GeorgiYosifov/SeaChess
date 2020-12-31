@@ -1,6 +1,6 @@
 ﻿namespace SeaChess.Game.Data
 {
-    public class Playground
+    public class Game
     {
         public string Id { get; set; }
 

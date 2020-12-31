@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Models;
 using SeaChess.MatchMaker.Hubs;
 
 namespace SeaChess.MatchMaker
@@ -27,10 +28,13 @@ namespace SeaChess.MatchMaker
 
             services.AddMassTransit(config =>
             {
-                config.UsingRabbitMq((ctx, cfg) =>
+                config.AddBus(context => Bus.Factory.CreateUsingRabbitMq(c =>
                 {
-                    cfg.Host("amqp://guest:guest@localhost:5672");
-                });
+                    c.Host("amqp://guest:guest@localhost:5672");
+                    c.ConfigureEndpoints(context);
+                }));
+
+                config.AddRequestClient<TransferSelectedUsersToGame>();
             });
 
             services.AddMassTransitHostedService();

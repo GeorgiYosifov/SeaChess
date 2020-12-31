@@ -46,7 +46,7 @@ namespace SeaChess.Home
                     {
                         c.ConfigureConsumer<LoginConsumer>(ctx);
                     });
-                    cfg.ReceiveEndpoint("transferSelectedUsersToGame-queue", c =>
+                    cfg.ReceiveEndpoint("changeStatusToGame-queue", c =>
                     {
                         c.ConfigureConsumer<ChangeStatusToGameConsumer>(ctx);
                     });
