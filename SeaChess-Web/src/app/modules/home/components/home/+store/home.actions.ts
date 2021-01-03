@@ -1,5 +1,5 @@
-import { IAction } from '../../../shared/action';
-import { IUser } from '../../../shared/models/user-home';
+import { IAction } from '../../../../shared/action';
+import { IUser } from '../../../../shared/models/user-home';
 
 export const ActionTypes = {
     LoadUsers: '[Home] Load Users',

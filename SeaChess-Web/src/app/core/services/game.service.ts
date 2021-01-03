@@ -2,10 +2,8 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@aspnet/signalr';
 import { IHttpConnectionOptions } from '@aspnet/signalr';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import * as fromHomeStore from 'src/app/modules/home/components/+store/home.index';
-import * as fromHomeSelector from 'src/app/modules/home/components/+store/home.selectors';
-import { IUser } from 'src/app/modules/shared/models/user-home';
+import { IRouterState } from 'src/app/+store/router.index';
+import * as fromGameStore from 'src/app/modules/home/components/game/+store/game.index';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -15,7 +13,8 @@ export class GameService {
     private API_URL = environment.API_URL;
     private hubConnection: signalR.HubConnection;
 
-    constructor(private storeGame: Store<fromGameStore.IGameState>) { }
+    constructor(private gameState: Store<fromGameStore.IGameState>,
+        private routerState: Store<IRouterState>) { }
 
     public startConnection() {
         const token = localStorage.getItem('token');
@@ -35,19 +34,21 @@ export class GameService {
             .start()
             .then(() => {
                 console.log('Connection Started In Game');
-                this.sendUsersToBackEnd();
+                this.GetPlayersInfo();
             })
             .catch(err => console.log('Error while starting connection in game: ' + err));
     }
 
-    public sendUsersToBackEnd() {
-        this.users$.subscribe(data => {
-            if (data.length != 0) {
-                this.hubConnection.invoke('SendedUsersFromState', data)
-                    .then((_) => console.log('Send Users To MatchMaker'))
-                    .catch(err => console.log('Error Send Users: ' + err));
-            }
+    public GetPlayersInfo() {
+        let gameId: string;
+
+        this.routerState.subscribe((data) => {
+            gameId = data.router.state.queryParams['gameId'];
         }).unsubscribe();
+
+        this.hubConnection.invoke('GetPlayersInfo', gameId)
+                    .then((_) => console.log('Get Players Info'))
+                    .catch(err => console.log('Error Get Players Info: ' + err));
     }
 
     public endConnection() {

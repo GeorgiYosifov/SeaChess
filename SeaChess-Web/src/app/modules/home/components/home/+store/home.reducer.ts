@@ -1,4 +1,4 @@
-import { IUser } from '../../../shared/models/user-home';
+import { IUser } from '../../../../shared/models/user-home';
 import * as fromHomeActions from './home.actions';
 
 export interface IUsersState {

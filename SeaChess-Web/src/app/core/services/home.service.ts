@@ -5,10 +5,10 @@ import { IHttpConnectionOptions } from '@aspnet/signalr';
 import { IUser } from 'src/app/modules/shared/models/user-home';
 import { JwtHelper } from './JwtHelper';
 import { Store } from '@ngrx/store';
-import { IHomeState } from 'src/app/modules/home/components/+store/home.index';
-import * as fromHomeActions from '../../modules/home/components/+store/home.actions';
+import { IHomeState } from 'src/app/modules/home/components/home/+store/home.index';
+import * as fromHomeActions from '../../modules/home/components/home/+store/home.actions';
 import { Observable, Subscription } from 'rxjs';
-import * as fromHomeSelector from '../../modules/home/components/+store/home.selectors';
+import * as fromHomeSelector from '../../modules/home/components/home/+store/home.selectors';
 import { getRouterState, IRouterState } from 'src/app/+store/router.index';
 import { QueueService } from './queue.service';
 
@@ -21,6 +21,7 @@ export class HomeService {
     private hubConnection: signalR.HubConnection;
     public users$: Observable<IUser[]>;
     public showQueue: boolean = false;
+    public showGame: boolean = false;
     private routerSubscription: Subscription;
 
     constructor(private storeHome: Store<IHomeState>,
@@ -70,7 +71,9 @@ export class HomeService {
 
     public checkRouterForQueueView() {
         this.routerSubscription = this.storeRouter.select(getRouterState).subscribe(data => {
+            this.showGame = data.state.url.startsWith('/home/game');
             this.showQueue = data.state.url === '/home/queue';
+
             if (this.showQueue) {
                 this.changeUserStatus('Queue');
             } else if (data.state.url === '/home') {

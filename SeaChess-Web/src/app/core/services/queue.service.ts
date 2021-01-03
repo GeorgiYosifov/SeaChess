@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import * as signalR from '@aspnet/signalr';
 import { IHttpConnectionOptions } from '@aspnet/signalr';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import * as fromHomeStore from 'src/app/modules/home/components/+store/home.index';
-import * as fromHomeSelector from 'src/app/modules/home/components/+store/home.selectors';
+import * as fromHomeStore from 'src/app/modules/home/components/home/+store/home.index';
+import * as fromHomeSelector from 'src/app/modules/home/components/home/+store/home.selectors';
 import { IUser } from 'src/app/modules/shared/models/user-home';
 import { environment } from 'src/environments/environment';
 
@@ -16,7 +17,8 @@ export class QueueService {
     private hubConnection: signalR.HubConnection;
     public users$: Observable<IUser[]>;
 
-    constructor(private storeHome: Store<fromHomeStore.IHomeState>) { }
+    constructor(private storeHome: Store<fromHomeStore.IHomeState>, 
+        private router: Router) { }
 
     public startConnection() {
         const token = localStorage.getItem('token');
@@ -56,8 +58,8 @@ export class QueueService {
     }
 
     public addSendUsersToGameListener() {
-        this.hubConnection.on('SendUsersToGame', () => {
-            //this.storeRoute.dispatch(go(['/home/game']));
+        this.hubConnection.on('SendUsersToGame', (gameId: string) => {
+            this.router.navigate([ '/home/game' ], { queryParams: { gameId } });
         });
     }
 

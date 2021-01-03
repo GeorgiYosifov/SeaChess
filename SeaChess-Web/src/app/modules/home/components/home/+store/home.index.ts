@@ -8,7 +8,7 @@ export interface IHomeState {
     counter: fromUsersCounter.IUsersCountState;
 }
 
-export const reducers: ActionReducerMap<IHomeState> = {
+export const reducersHome: ActionReducerMap<IHomeState> = {
     users: fromUsers.usersReducer,
     counter: fromUsersCounter.countReducer
 };

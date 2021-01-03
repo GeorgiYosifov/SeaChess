@@ -59,7 +59,7 @@ namespace SeaChess.MatchMaker.Hubs
 
                 if (response.Message.Result)
                 {
-                    await this.Clients.Group(gameId).SendAsync("SendUsersToGame");
+                    await this.Clients.Group(gameId).SendAsync("SendUsersToGame", gameId);
                 }
             }
             else
