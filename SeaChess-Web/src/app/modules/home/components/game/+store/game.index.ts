@@ -1,15 +1,14 @@
 import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
-
+import { IInfoState, infoReducer } from './game-info.reducer';
 import { IPlayersState, playersReducer } from './game-players.reducer';
-import { gameInfoReducer, IGameInfoState } from './game.reducer';
 
 export interface IGameState {
-    gameInfo: IGameInfoState;
+    info: IInfoState;
     players: IPlayersState;
 }
 
 export const reducersGame: ActionReducerMap<IGameState> = {
-    gameInfo: gameInfoReducer,
+    info: infoReducer,
     players: playersReducer
 };
 

@@ -84,7 +84,6 @@ export class HomeService {
 
     public changeUserStatus(status: string) {
         const userId = this.decodedToken['id'];
-        ///this.storeHome.dispatch(new fromHomeActions.ChangeUserStatus({ userId, status }));
 
         this.hubConnection.invoke('ChangeUserStatus', userId, status)
             .then((_) => console.log('Change User Successfully'))

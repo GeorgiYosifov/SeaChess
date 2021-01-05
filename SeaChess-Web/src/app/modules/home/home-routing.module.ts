@@ -21,3 +21,5 @@ const routes: Routes = [
     exports: [RouterModule]
 })
 export class HomeRoutingModule { }
+
+//loadChildren: './game/game.module#GameModule',

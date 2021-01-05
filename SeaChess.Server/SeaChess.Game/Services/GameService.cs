@@ -1,5 +1,7 @@
 ﻿using SeaChess.Game.Data;
+using SeaChess.Game.ViewModels;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SeaChess.Game.Services
@@ -31,6 +33,28 @@ namespace SeaChess.Game.Services
             {
                 return false;
             }
+        }
+
+        public GameViewModel FetchGameInfo(string gameId)
+        {
+            return this.db.Games
+                .Select(g => new GameViewModel()
+                {
+                    Id = g.Id,
+                    FirstPlayer = new PlayerViewModel()
+                    {
+                        Id = g.FirstPlayerId,
+                        Email = g.FirstPlayer.Email,
+                        Score = g.FirstPlayer.Score
+                    },
+                    SecondPlayer = new PlayerViewModel()
+                    {
+                        Id = g.SecondPlayerId,
+                        Email = g.SecondPlayer.Email,
+                        Score = g.SecondPlayer.Score
+                    }
+                })
+                .FirstOrDefault(g => g.Id == gameId);
         }
 
         //public string GetEmailFromJwtToken(string token)

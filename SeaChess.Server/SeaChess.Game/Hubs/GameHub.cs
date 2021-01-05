@@ -1,13 +1,21 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using System.Threading.Tasks;
+using SeaChess.Game.Services;
+using SeaChess.Game.ViewModels;
 
 namespace SeaChess.Game.Hubs
 {
     public class GameHub : Hub
     {
-        public async Task GetPlayersInfo(string gameId)
+        private readonly IGameService gameService;
+
+        public GameHub(IGameService gameService)
         {
-            System.Console.WriteLine();
+            this.gameService = gameService;
+        }
+
+        public GameViewModel GetGameInfo(string gameId)
+        {
+            return this.gameService.FetchGameInfo(gameId);
         }
     }
 }

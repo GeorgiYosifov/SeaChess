@@ -32,18 +32,3 @@ export function usersReducer(state: IUsersState = defaultState, action: fromHome
 
     return state;
 }
-
-// if (action.type === fromHomeActions.ActionTypes.ChangeUserStatus) {
-//     const payload: { userId: string, status: string } = (action as fromHomeActions.ChangeUserStatus).payload;
-//     const userId: string = payload.userId;
-//     const status: string = payload.status;
-
-//     let user: IUser = state.active.find(u => u.id === userId);
-//     if (user != null) {
-//         user.status = status;
-//     }
-//     const queue: IUser[] = [...state.queue, user];
-//     const active: IUser[] = [...state.active.filter(u => u.id !== userId)];
-
-//     return { ...state, active, queue };
-// } 

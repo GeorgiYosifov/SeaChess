@@ -4,7 +4,11 @@ import { IHttpConnectionOptions } from '@aspnet/signalr';
 import { Store } from '@ngrx/store';
 import { IRouterState } from 'src/app/+store/router.index';
 import * as fromGameStore from 'src/app/modules/home/components/game/+store/game.index';
+import * as fromGameActions from 'src/app/modules/home/components/game/+store/game.actions';
 import { environment } from 'src/environments/environment';
+import { IGameIncomingInfo } from 'src/app/modules/shared/models/game-incoming-info';
+import { IGameInfo } from 'src/app/modules/shared/models/game-info';
+import { IPlayer } from 'src/app/modules/shared/models/player-game';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +17,8 @@ export class GameService {
     private API_URL = environment.API_URL;
     private hubConnection: signalR.HubConnection;
 
-    constructor(private gameState: Store<fromGameStore.IGameState>,
-        private routerState: Store<IRouterState>) { }
+    constructor(private storeGame: Store<fromGameStore.IGameState>,
+        private storeRouter: Store<IRouterState>) { }
 
     public startConnection() {
         const token = localStorage.getItem('token');
@@ -34,20 +38,29 @@ export class GameService {
             .start()
             .then(() => {
                 console.log('Connection Started In Game');
-                this.GetPlayersInfo();
+                this.GetGameInfo();
             })
             .catch(err => console.log('Error while starting connection in game: ' + err));
     }
 
-    public GetPlayersInfo() {
+    public GetGameInfo() {
         let gameId: string;
 
-        this.routerState.subscribe((data) => {
+        this.storeRouter.subscribe((data) => {
             gameId = data.router.state.queryParams['gameId'];
         }).unsubscribe();
 
-        this.hubConnection.invoke('GetPlayersInfo', gameId)
-                    .then((_) => console.log('Get Players Info'))
+        this.hubConnection.invoke('GetGameInfo', gameId)
+                    .then((gameIncomingInfo: IGameIncomingInfo) => {
+                        const gameInfo: IGameInfo = Object.assign({
+                            id: gameIncomingInfo.id,
+                            playerOnTurn: gameIncomingInfo.firstPlayer.id
+                        });
+                        const players: IPlayer[] = [ gameIncomingInfo.firstPlayer, gameIncomingInfo.secondPlayer ];
+
+                        this.storeGame.dispatch(new fromGameActions.LoadGameInfoSuccess(gameInfo));
+                        this.storeGame.dispatch(new fromGameActions.LoadPlayersSuccess(players));
+                    })
                     .catch(err => console.log('Error Get Players Info: ' + err));
     }
 

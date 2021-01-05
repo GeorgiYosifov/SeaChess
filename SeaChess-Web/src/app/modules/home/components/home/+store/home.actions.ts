@@ -5,7 +5,6 @@ export const ActionTypes = {
     LoadUsers: '[Home] Load Users',
     LoadUsersSuccess: '[Home] Load Users Success',
     LoadUsersFailed: '[Home] Load Users Failed',
-    ChangeUserStatus: '[Home] Change User Status',
     RemoveUser: '[Home] Remove User'
 };
 
@@ -24,14 +23,9 @@ export class LoadUsersFailed implements IAction<{ error: any }> {
     constructor(public payload: { error: any }) { }
 }
 
-export class ChangeUserStatus implements IAction<{ userId: string, status: string }> {
-    type = ActionTypes.ChangeUserStatus;
-    constructor(public payload: { userId: string, status: string }) { }
-}
-
 export class RemoveUser implements IAction<string> {
     type = ActionTypes.RemoveUser;
     constructor(public payload: string) { }
 }
 
-export type Actions = LoadUsers | LoadUsersSuccess | LoadUsersFailed | ChangeUserStatus | RemoveUser;
+export type Actions = LoadUsers | LoadUsersSuccess | LoadUsersFailed | RemoveUser;
