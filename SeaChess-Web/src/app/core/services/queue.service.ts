@@ -9,9 +9,7 @@ import * as fromHomeSelector from 'src/app/modules/home/components/home/+store/h
 import { IUser } from 'src/app/modules/shared/models/user-home';
 import { environment } from 'src/environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class QueueService {
     private API_URL = environment.API_URL;
     private hubConnection: signalR.HubConnection;

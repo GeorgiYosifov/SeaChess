@@ -1,18 +1,16 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
 
+import { environment } from 'src/environments/environment';
 import { AppComponent } from './app.component';
 import { SharedModule } from './modules/shared/shared.module';
-import { RouterModule } from '@angular/router';
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from 'src/environments/environment';
-import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { CustomSerializer } from './+store/router.reducer';
 import { routerReducers } from './+store/router.index';
-import { AuthModule } from './modules/authentication/auth.module';
-import { EffectsModule } from '@ngrx/effects';
-import { HomeModule } from './modules/home/home.module';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -20,9 +18,7 @@ import { HomeModule } from './modules/home/home.module';
   ],
   imports: [
     BrowserModule,
-    RouterModule,
-    AuthModule,
-    HomeModule,
+    AppRoutingModule,
     SharedModule,
     StoreModule.forRoot(routerReducers),
     StoreRouterConnectingModule.forRoot({ serializer: CustomSerializer }),

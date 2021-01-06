@@ -10,9 +10,7 @@ import { IGameIncomingInfo } from 'src/app/modules/shared/models/game-incoming-i
 import { IGameInfo } from 'src/app/modules/shared/models/game-info';
 import { IPlayer } from 'src/app/modules/shared/models/player-game';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class GameService {
     private API_URL = environment.API_URL;
     private hubConnection: signalR.HubConnection;

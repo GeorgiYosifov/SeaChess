@@ -12,9 +12,7 @@ import * as fromHomeSelector from '../../modules/home/components/home/+store/hom
 import { getRouterState, IRouterState } from 'src/app/+store/router.index';
 import { QueueService } from './queue.service';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class HomeService {
     private API_URL = environment.API_URL;
     private decodedToken: object;

@@ -6,9 +6,7 @@ import { IUserRegister } from 'src/app/modules/shared/models/user-register';
 import { IUserLogin } from 'src/app/modules/shared/models/user-login';
 import { IAuthSuccess } from 'src/app/modules/shared/models/auth-success';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AuthService {
   private API_URL = environment.API_URL;
   private readonly loginUrl = this.API_URL + '/api/v1/identity/login';

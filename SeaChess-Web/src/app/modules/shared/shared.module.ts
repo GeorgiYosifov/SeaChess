@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { AppRoutingModule } from 'src/app/app-routing.module';
 import { NavigationComponent } from './navigation/navigation.component';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -13,8 +15,10 @@ import { NavigationComponent } from './navigation/navigation.component';
   ],
   imports: [
     CommonModule,
-    AppRoutingModule
+    HttpClientModule,
+    RouterModule
   ],
+  providers: [ AuthService ],
   exports: [
     NavigationComponent
   ]

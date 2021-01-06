@@ -9,6 +9,7 @@ import { StoreModule } from '@ngrx/store';
 import { reducers } from './+store/auth.index';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './+store/auth/auth.effects';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { AuthEffects } from './+store/auth/auth.effects';
     EffectsModule.forFeature([
       AuthEffects
     ])
-  ]
+  ],
+  providers: [ AuthService ]
 })
 export class AuthModule { }

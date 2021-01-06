@@ -14,6 +14,7 @@ export class NavigationComponent {
 
   logout() {
     this.authService.logout();
-    this.router.navigate([ '/login' ]);
+    //Implement in logout() not here
+    this.router.navigate([ '/identity/login' ]);
   }  
 }

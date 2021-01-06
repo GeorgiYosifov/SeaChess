@@ -2,10 +2,18 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'home' },
-  { path: '', loadChildren: './modules/home/home.module#HomeModule'  },
-  { path: '', loadChildren: './modules/authentication/auth.module#AuthModule' }
-  //{ path: 'register', loadChildren: './modules/authentication/auth.module#AuthModule' }
+  {
+    path: 'home',
+    loadChildren: () => import('./modules/home/home.module').then(module => module.HomeModule)
+  },
+  {
+    path: 'identity',
+    loadChildren: () => import('./modules/authentication/auth.module').then(module => module.AuthModule)
+  },
+  { 
+    path: 'home/game',
+    loadChildren: () => import('./modules/home/components/game/game.module').then(module => module.GameModule)
+  }
 ]
 
 @NgModule({
