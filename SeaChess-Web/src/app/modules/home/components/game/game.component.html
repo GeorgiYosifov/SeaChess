@@ -1,2 +1,28 @@
-<p>game works!</p>
-<h1>GOshee</h1>
+<div class="row">
+    <div class="col-3"></div>
+    <div id='playground' class="col-6">
+        <table id="board" cellpadding="0" cellspacing="0">
+            <tr *ngFor='let in of rows;let row = index'>
+                <div class='wrapper' *ngIf="row == rows.length - 1;then lastRow else defaultRow"></div>
+
+                <ng-template #defaultRow>
+                    <td>
+                        <span class="index-top-left">{{rows.length - row - 1}}</span>
+                    </td>
+                    <td *ngFor='let in of cols;let col = index'></td>
+                </ng-template>
+
+                <ng-template #lastRow>
+                    <td>
+                        <span class="index-top-left">0</span>
+                        <span class="index-bottom-right">0</span>
+                    </td>
+                    <td *ngFor='let in of cols;let col = index'>
+                        <span class="index-bottom-right">{{col + 1}}</span>
+                    </td>
+                </ng-template>
+            </tr>
+        </table>
+    </div>
+    <div class="col-3"></div>
+</div>

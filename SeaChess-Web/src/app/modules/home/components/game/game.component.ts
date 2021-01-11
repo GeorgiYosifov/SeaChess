@@ -7,6 +7,8 @@ import { GameService } from 'src/app/core/services/game.service';
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit {
+  public rows = new Array(10);
+  public cols = new Array(9);
 
   constructor(private gameService: GameService) { }
 
