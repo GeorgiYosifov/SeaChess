@@ -13,6 +13,7 @@ import { environment } from 'src/environments/environment';
 export class QueueService {
     private API_URL = environment.API_URL;
     private hubConnection: signalR.HubConnection;
+    
     public users$: Observable<IUser[]>;
 
     constructor(private storeHome: Store<fromHomeStore.IHomeState>, 
@@ -57,7 +58,7 @@ export class QueueService {
 
     public addSendUsersToGameListener() {
         this.hubConnection.on('SendUsersToGame', (gameId: string) => {
-            this.router.navigate([ '/home/game' ], { queryParams: { gameId } });
+            this.router.navigate([ '/game' ], { queryParams: { gameId } });
         });
     }
 

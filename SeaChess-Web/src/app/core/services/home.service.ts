@@ -17,10 +17,10 @@ export class HomeService {
     private API_URL = environment.API_URL;
     private decodedToken: object;
     private hubConnection: signalR.HubConnection;
+    private routerSubscription: Subscription;
+
     public users$: Observable<IUser[]>;
     public showQueue: boolean = false;
-    public showGame: boolean = false;
-    private routerSubscription: Subscription;
 
     constructor(private storeHome: Store<IHomeState>,
         private storeRouter: Store<IRouterState>,
@@ -69,9 +69,7 @@ export class HomeService {
 
     public checkRouterForQueueView() {
         this.routerSubscription = this.storeRouter.select(getRouterState).subscribe(data => {
-            this.showGame = data.state.url.startsWith('/home/game');
             this.showQueue = data.state.url === '/home/queue';
-
             if (this.showQueue) {
                 this.changeUserStatus('Queue');
             } else if (data.state.url === '/home') {

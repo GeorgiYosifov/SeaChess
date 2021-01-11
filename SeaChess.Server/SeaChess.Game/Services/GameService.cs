@@ -35,7 +35,7 @@ namespace SeaChess.Game.Services
             }
         }
 
-        public GameViewModel FetchGameInfo(string gameId)
+        public GameViewModel GetGameInfo(string gameId)
         {
             return this.db.Games
                 .Select(g => new GameViewModel()

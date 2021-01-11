@@ -11,7 +11,7 @@ const routes: Routes = [
     loadChildren: () => import('./modules/authentication/auth.module').then(module => module.AuthModule)
   },
   { 
-    path: 'home/game',
+    path: 'game',
     loadChildren: () => import('./modules/home/components/game/game.module').then(module => module.GameModule)
   }
 ]

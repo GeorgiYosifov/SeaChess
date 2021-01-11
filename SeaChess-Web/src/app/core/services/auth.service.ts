@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { IUserRegister } from 'src/app/modules/shared/models/user-register';
 import { IUserLogin } from 'src/app/modules/shared/models/user-login';
 import { IAuthSuccess } from 'src/app/modules/shared/models/auth-success';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +13,8 @@ export class AuthService {
   private readonly loginUrl = this.API_URL + '/api/v1/identity/login';
   private readonly registerUrl = this.API_URL + '/api/v1/identity/register';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private router: Router) { }
 
   register(body: IUserRegister): Observable<IAuthSuccess> {
     return this.http.post<IAuthSuccess>(this.registerUrl, body);
@@ -24,6 +26,7 @@ export class AuthService {
 
   logout() {
     localStorage.clear();
+    this.router.navigate([ '/identity/login' ]);
   }
 
   isAuthenticated(): Boolean {

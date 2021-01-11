@@ -1,5 +1,4 @@
-﻿using SeaChess.Identity.Domain;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace SeaChess.Identity.Data

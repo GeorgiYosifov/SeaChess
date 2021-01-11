@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SeaChess.Identity.Domain
+namespace SeaChess.Identity.Data
 {
     public class AuthenticationResult
     {

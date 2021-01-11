@@ -13,7 +13,7 @@
                 <a class="nav-link" routerLink="/home/queue">Queue</a>
             </li>
             <li *ngIf="authService.isAuthenticated()" class="nav-item">
-                <a class="nav-link" (click)="logout()">Logout</a>
+                <a class="nav-link" (click)="authService.logout()">Logout</a>
             </li>
         </ul>
     </div>

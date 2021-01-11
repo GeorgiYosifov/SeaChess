@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using SeaChess.Identity.Contracts.V1.Responses;
-using SeaChess.Identity.Domain;
+using SeaChess.Identity.Data;
 
 namespace SeaChess.Identity.Services
 {

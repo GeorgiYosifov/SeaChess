@@ -15,7 +15,7 @@ namespace SeaChess.Game.Hubs
 
         public GameViewModel GetGameInfo(string gameId)
         {
-            return this.gameService.FetchGameInfo(gameId);
+            return this.gameService.GetGameInfo(gameId);
         }
     }
 }

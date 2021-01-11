@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SeaChess.Identity.Domain
+namespace SeaChess.Identity.Data
 {
     public class RefreshToken
     {

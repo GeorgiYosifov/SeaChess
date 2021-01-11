@@ -23,15 +23,9 @@
     </div>
 
     <div *ngIf="homeService.showQueue;then queue else none_content"></div>
-    <div *ngIf="homeService.showGame;then game else none_content"></div>
     <ng-template #queue>
         <div class="col-5">
             <app-queue (hideContent)="homeService.showQueue"></app-queue>
-        </div>
-    </ng-template>
-    <ng-template #game>
-        <div class="col-9">
-            <app-game (hideContent)="homeService.showGame"></app-game>
         </div>
     </ng-template>
     <ng-template #none_content></ng-template>

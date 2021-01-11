@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using SeaChess.Identity.Options;
 using SeaChess.Identity.Data;
-using SeaChess.Identity.Domain;
 using SeaChess.Identity.Contracts.V1.Responses;
 
 namespace SeaChess.Identity.Services

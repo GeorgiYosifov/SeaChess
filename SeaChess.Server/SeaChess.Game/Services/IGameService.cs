@@ -8,7 +8,7 @@ namespace SeaChess.Game.Services
     {
         Task<bool> CreateGameAsync(string gameId, Player firstPlayer, Player secondPlayer);
 
-        GameViewModel FetchGameInfo(string gameId);
+        GameViewModel GetGameInfo(string gameId);
 
         //string GetEmailFromJwtToken(string token);
     }

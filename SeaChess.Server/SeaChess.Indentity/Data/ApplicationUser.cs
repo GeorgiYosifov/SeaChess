@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace SeaChess.Identity.Domain
+namespace SeaChess.Identity.Data
 {
     public class ApplicationUser : IdentityUser
     {
