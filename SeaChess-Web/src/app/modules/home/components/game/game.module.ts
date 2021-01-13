@@ -5,6 +5,7 @@ import { GameComponent } from './game.component';
 import { reducersGame } from './+store/game.index';
 import { GameService } from 'src/app/core/services/game.service';
 import { RouterModule, Routes } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const routes: Routes = [
   { path: '', component: GameComponent }
@@ -16,6 +17,7 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
+    FontAwesomeModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature('game', reducersGame)
   ],

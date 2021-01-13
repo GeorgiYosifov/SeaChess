@@ -1,28 +1,41 @@
 <div class="row">
-    <div class="col-3"></div>
-    <div id='playground' class="col-6">
-        <table id="board" cellpadding="0" cellspacing="0">
-            <tr *ngFor='let in of rows;let row = index'>
-                <div class='wrapper' *ngIf="row == rows.length - 1;then lastRow else defaultRow"></div>
+    <div class="col-3">Gohshee</div>
+    <div>
+        <table id="board" class="col-6" cellpadding="0" cellspacing="0">
+            <tr *ngFor='let row of rows'>
+                <div *ngIf="row == '0';then lastRow else defaultRow"></div>
 
                 <ng-template #defaultRow>
-                    <td>
-                        <span class="index-top-left">{{rows.length - row - 1}}</span>
+                    <td [id]="row + 'a'">
+                        <span class="index-top-left">{{row}}</span>
+                        <div class="icon">
+                            <fa-icon [icon]="faTimes"></fa-icon>
+                        </div>
                     </td>
-                    <td *ngFor='let in of cols;let col = index'></td>
+                    <td [id]="row + col" *ngFor='let col of cols'>
+                        <div class="icon">
+                            <fa-icon [icon]="faTimes"></fa-icon>
+                        </div>
+                    </td>
                 </ng-template>
 
                 <ng-template #lastRow>
-                    <td>
+                    <td [id]="'0a'">
                         <span class="index-top-left">0</span>
-                        <span class="index-bottom-right">0</span>
+                        <div class="icon">
+                            <fa-icon [icon]="faTimes"></fa-icon>
+                        </div>
+                        <span class="index-bottom-right">a</span>
                     </td>
-                    <td *ngFor='let in of cols;let col = index'>
-                        <span class="index-bottom-right">{{col + 1}}</span>
+                    <td [id]="'0' + col" *ngFor='let col of cols'>
+                        <span class="index-bottom-right">{{col}}</span>
+                        <div class="icon">
+                            <fa-icon [icon]="faTimes"></fa-icon>
+                        </div>
                     </td>
                 </ng-template>
             </tr>
         </table>
     </div>
-    <div class="col-3"></div>
+    <div class="col-3">GOsheeeee</div>
 </div>
