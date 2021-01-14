@@ -1,11 +1,10 @@
-import { CellType } from "./game-cell-type";
+import { IconType } from "./player-icon-type";
 import { ICell } from "./game-cell";
 
 export interface IPlayer {
     id: string;
     email: string;
     score: number;
-    cellType: CellType;
+    iconType: IconType;
     movements: ICell[];
-    //[{ [cellId: string]: ICell; }];
 }

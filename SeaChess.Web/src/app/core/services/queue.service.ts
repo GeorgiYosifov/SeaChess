@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class QueueService {
-    private API_URL = environment.API_URL;
+    private readonly API_URL = environment.API_URL;
     private hubConnection: signalR.HubConnection;
     
     public users$: Observable<IUser[]>;

@@ -1,4 +1,4 @@
-export enum CellType {
+export enum IconType {
     Cross,
     Circle
 }

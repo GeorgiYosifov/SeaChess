@@ -18,8 +18,9 @@ export function infoReducer(state: IInfoState = defaultState, action: fromGameAc
         const info: IGameInfo = (action as fromGameActions.LoadGameInfoSuccess).payload;
         const id = info.id;
         const playerOnTurn = info.playerOnTurn;
+        const turn = info.turn;
 
-        return { ...state, id, playerOnTurn };
+        return { ...state, id, playerOnTurn, turn };
     }
 
     return state;

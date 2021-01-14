@@ -2,36 +2,36 @@
     <div class="col-3">Gohshee</div>
     <div>
         <table id="board" class="col-6" cellpadding="0" cellspacing="0">
-            <tr *ngFor='let row of rows'>
+            <tr *ngFor="let row of rows">
                 <div *ngIf="row == '0';then lastRow else defaultRow"></div>
 
                 <ng-template #defaultRow>
-                    <td [id]="row + 'a'">
+                    <td [id]="row + 'a'" (click)="move($event.target.id)">
                         <span class="index-top-left">{{row}}</span>
-                        <div class="icon">
-                            <fa-icon [icon]="faTimes"></fa-icon>
-                        </div>
+                        <!-- <div class="icon">
+                            <fa-icon [icon]="faCross"></fa-icon>
+                        </div> -->
                     </td>
-                    <td [id]="row + col" *ngFor='let col of cols'>
-                        <div class="icon">
-                            <fa-icon [icon]="faTimes"></fa-icon>
-                        </div>
+                    <td [id]="row + col" *ngFor="let col of cols" (click)="move($event.target.id)">
+                        <!-- <div class="icon">
+                            <fa-icon [icon]="faCross"></fa-icon>
+                        </div> -->
                     </td>
                 </ng-template>
 
                 <ng-template #lastRow>
-                    <td [id]="'0a'">
+                    <td [id]="'0a'" (click)="move($event.target.id)">
                         <span class="index-top-left">0</span>
-                        <div class="icon">
-                            <fa-icon [icon]="faTimes"></fa-icon>
-                        </div>
+                        <!-- <div class="icon">
+                            <fa-icon [icon]="faCross"></fa-icon>
+                        </div> -->
                         <span class="index-bottom-right">a</span>
                     </td>
-                    <td [id]="'0' + col" *ngFor='let col of cols'>
+                    <td [id]="'0' + col" *ngFor="let col of cols" (click)="move($event.target.id)">
                         <span class="index-bottom-right">{{col}}</span>
-                        <div class="icon">
-                            <fa-icon [icon]="faTimes"></fa-icon>
-                        </div>
+                        <!-- <div class="icon">
+                            <fa-icon [icon]="faCross"></fa-icon>
+                        </div> -->
                     </td>
                 </ng-template>
             </tr>

@@ -9,13 +9,13 @@ import { environment } from 'src/environments/environment';
 import { IGameIncomingInfo } from 'src/app/modules/shared/models/game/game-incoming-info';
 import { IGameInfo } from 'src/app/modules/shared/models/game/game-info';
 import { IPlayer } from 'src/app/modules/shared/models/game/game-player';
-import { CellType } from 'src/app/modules/shared/models/game/game-cell-type';
+import { IconType } from 'src/app/modules/shared/models/game/player-icon-type';
 import * as fromGameSelectors from 'src/app/modules/home/components/game/+store/game.selectors';
 import { ICellView } from 'src/app/modules/shared/models/game/game-cell-view';
 
 @Injectable()
 export class GameService {
-    private API_URL = environment.API_URL;
+    private readonly API_URL = environment.API_URL;
     private hubConnection: signalR.HubConnection;
 
     constructor(private storeGame: Store<fromGameStore.IGameState>,
@@ -39,12 +39,12 @@ export class GameService {
             .start()
             .then(() => {
                 console.log('Connection Started In Game');
-                this.GetGameInfo();
+                this.getGameInfo();
             })
             .catch(err => console.log('Error while starting connection in game: ' + err));
     }
 
-    public GetGameInfo() {
+    public getGameInfo() {
         let gameId: string;
 
         this.storeRouter.subscribe((data) => {
@@ -55,11 +55,14 @@ export class GameService {
                     .then((gameIncomingInfo: IGameIncomingInfo) => {
                         const gameInfo: IGameInfo = Object.assign({
                             id: gameIncomingInfo.id,
-                            playerOnTurn: gameIncomingInfo.firstPlayer.id
+                            playerOnTurn: gameIncomingInfo.firstPlayer.id,
+                            turn: 1
                         });
 
-                        gameIncomingInfo.firstPlayer.cellType = CellType.Cross;
-                        gameIncomingInfo.secondPlayer.cellType = CellType.Circle;
+                        gameIncomingInfo.firstPlayer.iconType = IconType.Cross;
+                        gameIncomingInfo.firstPlayer.movements = [];
+                        gameIncomingInfo.secondPlayer.iconType = IconType.Circle;
+                        gameIncomingInfo.secondPlayer.movements = [];
                         const players: IPlayer[] = [ gameIncomingInfo.firstPlayer, gameIncomingInfo.secondPlayer ];
 
                         this.storeGame.dispatch(new fromGameActions.LoadGameInfoSuccess(gameInfo));
@@ -68,16 +71,39 @@ export class GameService {
                     .catch(err => console.log('Error Get Players Info: ' + err));
     }
 
-    public SelectUsedCells(): { [cellType: string]: ICellView[] } {
-        let cells: { [cellType: string]: ICellView[] } = {};
+    public selectUsedCells(): { [iconType: string]: ICellView[] } {
+        let cells: { [iconType: string]: ICellView[] } = {};
 
         this.storeGame.select(fromGameSelectors.getGameUsedCells).subscribe((data: ICellView[]) => {
-            cells['cross'] = data.filter(c => c.type == CellType.Cross);
-            cells['circle'] = data.filter(c => c.type == CellType.Circle);
+            cells['Cross'] = data.filter(c => c.iconType == IconType.Cross);
+            cells['Circle'] = data.filter(c => c.iconType == IconType.Circle);
         }).unsubscribe();
         
         return cells;
     }
+
+    public markCell(id: string) {
+        //let iconType: IconType;
+
+        this.storeGame.select(fromGameSelectors.getGamePlayerOnTurnInfo).subscribe((data: IPlayer) => {
+            if (!data.movements.find(m => m.id == id)) {
+                let entities: IPlayer[];
+                this.storeGame.select(fromGameSelectors.getGamePlayersEntities).subscribe((data: IPlayer[]) => {
+                    entities = data;
+                }).unsubscribe();
+
+                //iconType = data.iconType;
+                const dataToMakeCell = Object.assign({
+                    markCellId: id,
+                    playerOnTurnId: data.id,
+                    entities: entities
+                });
+
+
+                this.storeGame.dispatch(new fromGameActions.MarkCell(dataToMakeCell));
+            }
+        }).unsubscribe();
+    }    
 
     public endConnection() {
         this.hubConnection

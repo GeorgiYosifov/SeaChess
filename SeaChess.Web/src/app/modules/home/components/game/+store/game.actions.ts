@@ -7,6 +7,7 @@ export const ActionTypes = {
     LoadPlayersSuccess: '[Game] Load Players Success',
     LoadPlayersFailed: '[Game] Load Players Failed',
     LoadGameInfoSuccess: '[Game] Load Game Info Success',
+    MarkCell: '[Game] Mark Cell'
 };
 
 export class LoadPlayers implements IAction<null> {
@@ -29,4 +30,9 @@ export class LoadGameInfoSuccess implements IAction<IGameInfo> {
     constructor(public payload: IGameInfo) { }
 }
 
-export type Actions = LoadPlayers | LoadPlayersSuccess | LoadPlayersFailed | LoadGameInfoSuccess;
+export class MarkCell implements IAction<{ markCellId: string, playerOnTurnId: string, entities: IPlayer[] }> {
+    type = ActionTypes.MarkCell;
+    constructor(public payload: { markCellId: string, playerOnTurnId: string, entities: IPlayer[] }) { }
+}
+
+export type Actions = LoadPlayers | LoadPlayersSuccess | LoadPlayersFailed | LoadGameInfoSuccess | MarkCell;

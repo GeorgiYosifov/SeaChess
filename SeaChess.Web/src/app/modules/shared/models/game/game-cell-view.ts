@@ -1,7 +1,7 @@
-import { CellType } from "./game-cell-type";
+import { IconType } from "./player-icon-type";
 
 export interface ICellView {
     id: string;
-    type: CellType;
+    iconType: IconType;
     alreadyInPoint: boolean; //Already used and also marked not to be count for new Point to PlayerScore
 }

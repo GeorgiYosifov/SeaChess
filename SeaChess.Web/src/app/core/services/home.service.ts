@@ -3,7 +3,7 @@ import * as signalR from '@aspnet/signalr';
 import { environment } from 'src/environments/environment';
 import { IHttpConnectionOptions } from '@aspnet/signalr';
 import { IUser } from 'src/app/modules/shared/models/home/user-home';
-import { JwtHelper } from './JwtHelper';
+import { JwtHelper } from './jwtHelper';
 import { Store } from '@ngrx/store';
 import { IHomeState } from 'src/app/modules/home/components/home/+store/home.index';
 import * as fromHomeActions from '../../modules/home/components/home/+store/home.actions';
@@ -14,7 +14,7 @@ import { QueueService } from './queue.service';
 
 @Injectable()
 export class HomeService {
-    private API_URL = environment.API_URL;
+    private readonly API_URL = environment.API_URL;
     private decodedToken: object;
     private hubConnection: signalR.HubConnection;
     private routerSubscription: Subscription;

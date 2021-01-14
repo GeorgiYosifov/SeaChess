@@ -7,6 +7,7 @@ import { HomeService } from 'src/app/core/services/home.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+  
   constructor(public homeService: HomeService) { }
 
   ngOnInit() {
