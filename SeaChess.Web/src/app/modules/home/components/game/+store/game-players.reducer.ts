@@ -17,11 +17,12 @@ export function playersReducer(state: IPlayersState = defaultState, action: from
 
         return { ...state, entities };
     } else if (action.type === fromGameActions.ActionTypes.MarkCell) {
+        //do model of this object
         let data: { markCellId: string, playerOnTurnId: string, entities: IPlayer[] } 
             = (action as fromGameActions.MarkCell).payload;
 
-        let entities = data.entities;
-        let movements: ICell[] = Object.assign([], entities.find(e => e.id == data.playerOnTurnId).movements);
+        let movements: ICell[] = Object.assign([],
+            data.entities.find(e => e.id == data.playerOnTurnId).movements);
         
         let markCell: ICell = {
             id: data.markCellId,
@@ -29,7 +30,7 @@ export function playersReducer(state: IPlayersState = defaultState, action: from
         };
 
         //check top left diagonal
-        let markedCells: ICell[] = [markCell];
+        let markedCells: ICell[] = [ markCell ];
         for (let i = 0; i < 3; i++) {
             let currentMarkedCell: ICell = markedCells[markedCells.length - 1];
 
@@ -38,27 +39,34 @@ export function playersReducer(state: IPlayersState = defaultState, action: from
             if (newCell != null) {
                 markedCells.push(newCell);
             } else {
-                markedCells = [markCell];
+                markedCells = [ markCell ];
                 break;
             }
         }
 
-        //need TODO
+        movements.push(markCell);
+
         if (markedCells.length == 4) {
-            //markedCells.map(m => m.alreadyInPoint = true);
-            movements.push(markCell);
-            markedCells.forEach(c => {
-                movements.find(m => m.id == c.id).alreadyInPoint = true; 
+            let tempMovements = movements.map(m => {
+                if (markedCells.find(c => c.id == m.id)) {
+                    return Object.assign({ ...m, alreadyInPoint: true });
+                }
+                else {
+                    return m
+                }
             });
 
-            entities.find(e => e.id == data.playerOnTurnId).movements = movements;
-            return { ...state, entities };
-        } else {
-            //fix this assignment
-            movements.push(markCell);
-            entities.find(e => e.id == data.playerOnTurnId).movements = Object.assign([], movements);
-            return { ...state, entities };
+            movements = Object.assign(tempMovements);
         }
+
+        let playerOnTurn = data.entities.find(e => e.id == data.playerOnTurnId);
+        let playerNotOnTurn = data.entities.find(e => e.id != data.playerOnTurnId);
+
+        let entities: IPlayer[] = [ playerNotOnTurn, Object.assign({
+            ...playerOnTurn, movements: movements                
+        }) ];
+
+        return { ...state, entities };
     }
 
     return state;
