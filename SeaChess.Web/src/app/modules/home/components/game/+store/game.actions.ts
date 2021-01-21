@@ -1,5 +1,6 @@
 import { IAction } from "src/app/modules/shared/action";
 import { IGameInfo } from "src/app/modules/shared/models/game/game-info";
+import { IMarkCell } from "src/app/modules/shared/models/game/game-mark-cell";
 import { IPlayer } from "src/app/modules/shared/models/game/game-player";
 
 export const ActionTypes = {
@@ -30,9 +31,9 @@ export class LoadGameInfoSuccess implements IAction<IGameInfo> {
     constructor(public payload: IGameInfo) { }
 }
 
-export class MarkCell implements IAction<{ markCellId: string, playerOnTurnId: string, entities: IPlayer[] }> {
+export class MarkCell implements IAction<IMarkCell> {
     type = ActionTypes.MarkCell;
-    constructor(public payload: { markCellId: string, playerOnTurnId: string, entities: IPlayer[] }) { }
+    constructor(public payload: IMarkCell) { }
 }
 
 export type Actions = LoadPlayers | LoadPlayersSuccess | LoadPlayersFailed | LoadGameInfoSuccess | MarkCell;

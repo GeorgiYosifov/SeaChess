@@ -99,7 +99,6 @@ export class GameService {
                     entities: entities
                 });
 
-
                 this.storeGame.dispatch(new fromGameActions.MarkCell(dataToMakeCell));
             }
         }).unsubscribe();

@@ -19,7 +19,7 @@ export class GameComponent implements OnInit {
     this.gameService.startConnection();
   }
 
-  move(id: string) {
+  markCell(id: string) {
     this.gameService.markCell(id);
   }
 
