@@ -21,7 +21,10 @@ namespace SeaChess.Identity.Services
         private readonly TokenValidationParameters tokenValidationParameters;
         private readonly DataContext context;
 
-        public IdentityService(UserManager<ApplicationUser> userManager, JwtSettings jwtSettings, TokenValidationParameters tokenValidationParameters, DataContext context)
+        public IdentityService(UserManager<ApplicationUser> userManager,
+            JwtSettings jwtSettings,
+            TokenValidationParameters tokenValidationParameters,
+            DataContext context)
         {
             this.userManager = userManager;
             this.jwtSettings = jwtSettings;

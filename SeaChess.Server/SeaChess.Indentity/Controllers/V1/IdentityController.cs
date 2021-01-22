@@ -7,24 +7,21 @@ using SeaChess.Infrastructure;
 using SeaChess.Identity.Contracts.V1.Responses;
 using System.Linq;
 using MassTransit;
-using AutoMapper;
 using Models;
 
 namespace SeaChess.Identity.Controllers.V1
 {
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Poster")]
     public class IdentityController : ApiController
     {
         private readonly IIdentityService identityService;
         private readonly IPublishEndpoint publishEndpoint;
-        private readonly IMapper mapper;
 
-        public IdentityController(IIdentityService identityService, IPublishEndpoint publishEndpoint, IMapper mapper)
+        public IdentityController(IIdentityService identityService, IPublishEndpoint publishEndpoint)
         {
             this.identityService = identityService;
             this.publishEndpoint = publishEndpoint;
-            this.mapper = mapper;
+            //this.mapper = mapper;
             //this.mapper.Map<List<PostResponse>>(posts); //in controller method
         }
 
