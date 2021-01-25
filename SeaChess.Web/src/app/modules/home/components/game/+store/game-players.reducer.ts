@@ -20,53 +20,45 @@ export function playersReducer(state: IPlayersState = defaultState, action: from
         return { ...state, entities };
     } else if (action.type === fromGameActions.ActionTypes.MarkCell) {
         let data: IMarkCell = (action as fromGameActions.MarkCell).payload;
-
-        let movements: ICell[] = Object.assign([], data.entities.find(e => e.id == data.playerOnTurnId).movements);
         let markCell: ICell = {
             id: data.markCellId,
             alreadyInPoint: false
         };
 
-        movements.push(markCell);
+        let playerOnTurn: IPlayer = data.entities.find(e => e.id == data.playerOnTurnId);
+        let playerNotOnTurn: IPlayer = data.entities.find(e => e.id != data.playerOnTurnId);
 
-        let isApplied = false;
+        let playerOnTurnCopy: IPlayer = Object.assign({
+            ...playerOnTurn,
+            movements: Object.assign([], playerOnTurn.movements)
+        });
+        playerOnTurnCopy.movements.push(markCell);
+
+        let estimatedPoint = false;
         for (let index = 0; index < 4; index++) {
-            isApplied = tryToApplyPointOnDiagonalCells(markCell, movements, ShiftHelper.diagonals[index]);
-            if (isApplied) break; 
+            estimatedPoint = tryToApplyPointOnDiagonalCells(markCell, playerOnTurnCopy, ShiftHelper.diagonals[index]);
+            if (estimatedPoint) break; 
         }
         
-        let playerOnTurn = data.entities.find(e => e.id == data.playerOnTurnId);
-        let playerNotOnTurn = data.entities.find(e => e.id != data.playerOnTurnId);
-
-        //NEED TO FIX REFERENCE ON MOVEMENTS
-        let entities: IPlayer[];
-        if (isApplied) {
-            entities = [ playerNotOnTurn, Object.assign({
-                ...playerOnTurn, movements, score: playerNotOnTurn.score + 1
-            }) ];
-        } else {
-            entities = [ playerNotOnTurn, Object.assign({
-                ...playerOnTurn, movements
-            }) ];
-        }
-        
-        return { ...state, entities };
+        return { ...state, entities: [ playerOnTurnCopy, playerNotOnTurn ] };
     }
 
     return state;
 }
 
 // Go through specific diagonal and search if the current cell has related cells
-function tryToApplyPointOnDiagonalCells(markCell: ICell, movements: ICell[], shift: IShift): boolean {
+function tryToApplyPointOnDiagonalCells(markCell: ICell, playerOnTurnCopy: IPlayer, shift: IShift): boolean {
 
-    let relatedTopCells: ICell[] = findRelatedCells(markCell, movements, shift.top.row, shift.top.col);
-    let relatedBottomCells: ICell[] = findRelatedCells(markCell, movements, shift.bottom.row, shift.bottom.col);
+    let relatedTopCells: ICell[] = findRelatedCells(markCell, playerOnTurnCopy.movements, shift.top.row, shift.top.col);
+    let relatedBottomCells: ICell[] = findRelatedCells(markCell, playerOnTurnCopy.movements, shift.bottom.row, shift.bottom.col);
 
     let relatedCells: ICell[];
     if (relatedTopCells.length + relatedBottomCells.length - 1 >= 4) {
-        let differenceInCounts = Math.abs(relatedTopCells.length - relatedBottomCells.length);
-        relatedCells = [ ...relatedTopCells, ...relatedBottomCells.splice(0, differenceInCounts) ];
-        changeRelatedCellsToUnusable(relatedCells, movements);
+        //remove duplicated cell
+        relatedBottomCells.splice(relatedBottomCells.indexOf(markCell), 1);
+        relatedCells = [ ...relatedTopCells, ...relatedBottomCells ];
+        changeRelatedCellsToUnusable(relatedCells, playerOnTurnCopy);
+        playerOnTurnCopy.score++;
         return true;
     }
     return false;
@@ -99,8 +91,8 @@ function shiftToFindNewCell(cellId: string, shiftRow: number, shiftCol: number):
     return shiftCell;
 }
 
-function changeRelatedCellsToUnusable(relatedCells: ICell[], movements: ICell[]) {
-    let tempMovements = movements.map(m => {
+function changeRelatedCellsToUnusable(relatedCells: ICell[], playerOnTurnCopy: IPlayer) {
+    let tempMovements = playerOnTurnCopy.movements.map(m => {
         if (relatedCells.find(c => c.id == m.id)) {
             return Object.assign({ ...m, alreadyInPoint: true });
         } else {
@@ -108,5 +100,5 @@ function changeRelatedCellsToUnusable(relatedCells: ICell[], movements: ICell[])
         }
     });
 
-    movements = Object.assign(tempMovements);
+    playerOnTurnCopy.movements = Object.assign(tempMovements);
 }
