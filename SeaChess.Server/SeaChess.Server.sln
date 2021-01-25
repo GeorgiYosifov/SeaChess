@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaChess.MatchMaker", "SeaC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaChess.Game", "SeaChess.Game\SeaChess.Game.csproj", "{42773A69-6D94-4E70-95BD-64D5A42B2143}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeaChess.Indentity.Tests", "SeaChess.Indentity.Tests\SeaChess.Indentity.Tests.csproj", "{B99C3DFE-CDA8-4B52-8EFC-3A2FC9A492ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeaChess.Indentity.Tests", "SeaChess.Indentity.Tests\SeaChess.Indentity.Tests.csproj", "{B99C3DFE-CDA8-4B52-8EFC-3A2FC9A492ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

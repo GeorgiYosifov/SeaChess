@@ -10,7 +10,6 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
-using AutoFixture;
 
 namespace SeaChess.Indentity.Tests
 {
@@ -106,7 +105,7 @@ namespace SeaChess.Indentity.Tests
             response.Should().Equals(result);
         }
 
-        private DataContext GetDatabaseContext()
+        public static DataContext GetDatabaseContext()
         {
             var options = new DbContextOptionsBuilder<DataContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -116,7 +115,7 @@ namespace SeaChess.Indentity.Tests
             return dataContext;
         }
 
-        private static async Task SeedUsers(DataContext dataContext, UserManager<ApplicationUser> userManager)
+        public static async Task SeedUsers(DataContext dataContext, UserManager<ApplicationUser> userManager)
         {
             if (await dataContext.Users.CountAsync() <= 0)
             {
