@@ -1,0 +1,21 @@
+<div class="col-6">
+    <table #board id="board">
+        <tr *ngFor="let row of rows">
+            <div *ngIf="row == '0';then lastRow else defaultRow"></div>
+
+            <ng-template #defaultRow>
+                <app-cell [id]="row + 'a'">
+                </app-cell>
+                <app-cell [id]="row + col" *ngFor="let col of cols">
+                </app-cell>
+            </ng-template>
+
+            <ng-template #lastRow>
+                <app-cell [id]="'0a'">
+                </app-cell>
+                <app-cell [id]="'0' + col" *ngFor="let col of cols">
+                </app-cell>
+            </ng-template>
+        </tr>
+    </table>
+</div>

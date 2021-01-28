@@ -1,25 +1,5 @@
 <div class="row">
-    <div class="col-3">Gohshee</div>
-    <div>
-        <table id="board" class="col-6">
-            <tr *ngFor="let row of rows">
-                <div *ngIf="row == '0';then lastRow else defaultRow"></div>
-
-                <ng-template #defaultRow>
-                    <app-cell [id]="row + 'a'">
-                    </app-cell>
-                    <app-cell [id]="row + col" *ngFor="let col of cols">
-                    </app-cell>
-                </ng-template>
-
-                <ng-template #lastRow>
-                    <app-cell [id]="'0a'">
-                    </app-cell>
-                    <app-cell [id]="'0' + col" *ngFor="let col of cols">
-                    </app-cell>
-                </ng-template>
-            </tr>
-        </table>
-    </div>
-    <div class="col-3">GOsheeeee</div>
+    <div class="col-3">Users' stats</div>
+    <app-board></app-board>
+    <div class="col-3">Movements</div>
 </div>
