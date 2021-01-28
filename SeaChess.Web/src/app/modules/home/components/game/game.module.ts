@@ -6,6 +6,7 @@ import { reducersGame } from './+store/game.index';
 import { GameService } from 'src/app/core/services/game.service';
 import { RouterModule, Routes } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CellComponent } from './cell/cell.component';
 
 const routes: Routes = [
   { path: '', component: GameComponent }
@@ -13,7 +14,8 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    GameComponent
+    GameComponent,
+    CellComponent
   ],
   imports: [
     CommonModule,

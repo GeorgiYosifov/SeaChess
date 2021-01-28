@@ -1,29 +1,22 @@
 <div class="row">
     <div class="col-3">Gohshee</div>
     <div>
-        <table id="board" class="col-6" cellpadding="0" cellspacing="0">
+        <table id="board" class="col-6">
             <tr *ngFor="let row of rows">
                 <div *ngIf="row == '0';then lastRow else defaultRow"></div>
 
                 <ng-template #defaultRow>
-                    <td [id]="row + 'a'" (click)="markCell($event.target.id)">
-                        <span class="index-top-left">{{row}}</span>
-                        <!-- <div class="icon">
-                            <fa-icon [icon]="faCross"></fa-icon>
-                        </div> -->
-                    </td>
-                    <td [id]="row + col" *ngFor="let col of cols" (click)="markCell($event.target.id)">
-                    </td>
+                    <app-cell [id]="row + 'a'">
+                    </app-cell>
+                    <app-cell [id]="row + col" *ngFor="let col of cols">
+                    </app-cell>
                 </ng-template>
 
                 <ng-template #lastRow>
-                    <td [id]="'0a'" (click)="markCell($event.target.id)">
-                        <span class="index-top-left">0</span>
-                        <span class="index-bottom-right">a</span>
-                    </td>
-                    <td [id]="'0' + col" *ngFor="let col of cols" (click)="markCell($event.target.id)">
-                        <span class="index-bottom-right">{{col}}</span>
-                    </td>
+                    <app-cell [id]="'0a'">
+                    </app-cell>
+                    <app-cell [id]="'0' + col" *ngFor="let col of cols">
+                    </app-cell>
                 </ng-template>
             </tr>
         </table>

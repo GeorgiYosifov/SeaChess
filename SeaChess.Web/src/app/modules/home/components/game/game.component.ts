@@ -1,6 +1,6 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { faTimes as faCross, faCircle } from '@fortawesome/free-solid-svg-icons';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { GameService } from 'src/app/core/services/game.service';
+import { CellComponent } from './cell/cell.component';
 
 @Component({
   selector: 'app-game',
@@ -9,18 +9,14 @@ import { GameService } from 'src/app/core/services/game.service';
 })
 export class GameComponent implements OnInit {
   public readonly rows = [ '9', '8', '7', '6', '5', '4', '3', '2', '1', '0' ];
-  public readonly cols = [ 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' ]; //also colun 'a' add in html
-  faCross = faCross;
-  faCircle = faCircle;
+  public readonly cols = [ 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' ]; //also colun 'a' added in html
   
+  @ViewChild(CellComponent) cell: CellComponent;
+
   constructor(private gameService: GameService) { }
 
   ngOnInit() {
     this.gameService.startConnection();
-  }
-
-  markCell(id: string) {
-    this.gameService.markCell(id);
   }
 
   ngOnDestroy() {
