@@ -77,6 +77,7 @@ namespace SeaChess.Gateway
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHttpsRedirection();
             app.UseRouting();
 
             app.UseCors("CorsPolicy");

@@ -36,12 +36,14 @@ namespace SeaChess.Indentity.Tests
             await IdentityServiceTests.SeedUsers(dbContext, userManager.Object);
 
             var url = "https://localhost:5003/api/v1/identity/login";
-            var request = new HttpRequestMessage(HttpMethod.Post, url);
-            request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(new
+            var request = new HttpRequestMessage(HttpMethod.Post, url)
             {
-                Email = "kirel1@abv.bg",
-                Password = "kirel1"
-            }), Encoding.UTF8, "application/json");
+                Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(new
+                {
+                    Email = "kirel1@abv.bg",
+                    Password = "kirel1"
+                }), Encoding.UTF8, "application/json")
+            };
 
             //var accessToken = FakeJwtManager.GenerateJwtToken();
             //request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);

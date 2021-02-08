@@ -1,1 +1,5 @@
-<td #td (click)="markCell()"></td>
+<td #td (click)="markCell()">
+    <div *ngIf="faIcon" class="icon">
+        <fa-icon [icon]="faIcon"></fa-icon>
+    </div>
+</td>

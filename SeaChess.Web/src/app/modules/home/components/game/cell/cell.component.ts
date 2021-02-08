@@ -9,11 +9,10 @@ import { IconType } from 'src/app/modules/shared/models/game/player-icon-type';
   styleUrls: ['./cell.component.css']
 })
 export class CellComponent {
-  faCross = faCross;
+  public faIcon: IconDefinition = null;
 
   @ViewChild('td') td: ElementRef;
   @Input() id: string;
-  @Input() icon: IconDefinition;
 
   constructor(private gameService: GameService,
     private renderer: Renderer2,
@@ -30,18 +29,9 @@ export class CellComponent {
     const result: { isMarked: boolean, iconType: IconType } = this.gameService.markCell(this.id);
     if (!result.isMarked) {
       if (result.iconType == IconType.Cross) {
-        const divIcon: ElementRef = this.renderer.createElement('div');
-        const faIcon: ElementRef = this.renderer.createElement('fa-icon');
-        this.renderer.addClass(divIcon, 'icon');
-        //divIcon.nativeElement.innerHTML = '<fa-icon [icon]=' + faCross + '></fa-icon>';
-        this.renderer.setProperty(faIcon, 'icon', faCross);
-        this.renderer.appendChild(divIcon, faIcon);
-        this.renderer.appendChild(this.td.nativeElement, divIcon);
+        this.faIcon = faCross;
       } else if (result.iconType == IconType.Circle) {
-        const divIcon = this.renderer.createElement('div');
-        this.renderer.addClass(divIcon, 'icon');
-        this.renderer.appendChild(divIcon, faCircle);
-        this.renderer.appendChild(this.td.nativeElement, divIcon);
+        this.faIcon = faCircle;
       }
     }
   }
