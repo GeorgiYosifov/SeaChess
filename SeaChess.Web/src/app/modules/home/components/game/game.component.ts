@@ -11,6 +11,7 @@ export class GameComponent {
 
   ngOnInit() {
     this.gameService.startConnection();
+    this.gameService.addYourTurnListener();
   }
 
   ngOnDestroy() {

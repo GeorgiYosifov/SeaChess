@@ -33,9 +33,7 @@ span.index-bottom-right {
 }
 
 .icon {
-    position: absolute;
-    top: 63%;
-    left: 74%;
-    margin: -25px 0 0 -25px;
+    margin: auto;
+    margin-top: 25%;
     font-size: xx-large;
 }

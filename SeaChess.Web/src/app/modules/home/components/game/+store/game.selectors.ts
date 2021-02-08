@@ -21,7 +21,7 @@ export const getUsedCells = (players: IPlayer[]): ICellView[] => {
     return movements;
 }
 export const getPlayerOnTurnInfo = (state: IGameState): IPlayer => {
-    const playerOnTurnId = state.info.playerOnTurn;
+    const playerOnTurnId = state.info.playerOnTurnId;
     return state.players.entities.find(e => e.id == playerOnTurnId);
 }
 

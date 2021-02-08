@@ -1,5 +1,5 @@
 export interface IGameInfo {
     id: string;
-    playerOnTurn: string;
+    playerOnTurnId: string;
     turn: number;
 }

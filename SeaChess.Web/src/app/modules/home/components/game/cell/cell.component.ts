@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, Renderer2, ViewChild } from '@angular/core';
-import { faTimes as faCross, faCircle, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faTimes as fasCross } from '@fortawesome/free-solid-svg-icons';
+import { faCircle as farCircle } from '@fortawesome/free-regular-svg-icons';
 import { GameService } from 'src/app/core/services/game.service';
 import { IconType } from 'src/app/modules/shared/models/game/player-icon-type';
 
@@ -9,7 +10,7 @@ import { IconType } from 'src/app/modules/shared/models/game/player-icon-type';
   styleUrls: ['./cell.component.css']
 })
 export class CellComponent {
-  public faIcon: IconDefinition = null;
+  public faIcon: any;
 
   @ViewChild('td') td: ElementRef;
   @Input() id: string;
@@ -25,14 +26,12 @@ export class CellComponent {
     this.estimateCellContent();
   }
   
-  markCell() {
-    const result: { isMarked: boolean, iconType: IconType } = this.gameService.markCell(this.id);
-    if (!result.isMarked) {
-      if (result.iconType == IconType.Cross) {
-        this.faIcon = faCross;
-      } else if (result.iconType == IconType.Circle) {
-        this.faIcon = faCircle;
-      }
+  public markCell() {
+    const result: { iconType: IconType } = this.gameService.markCell(this.id);
+    if (result.iconType == IconType.Cross) {
+      this.faIcon = fasCross;
+    } else if (result.iconType == IconType.Circle) {
+      this.faIcon = farCircle;
     }
   }
 

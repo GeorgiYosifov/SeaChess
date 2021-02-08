@@ -3,13 +3,13 @@ import * as fromGameActions from "./game.actions";
 
 export interface IInfoState {
     id: string;
-    playerOnTurn: string;
+    playerOnTurnId: string;
     turn: number;
 }
 
 const defaultState: IInfoState = {
     id: '',
-    playerOnTurn: '',
+    playerOnTurnId: '',
     turn: 0
 };
 
@@ -17,10 +17,16 @@ export function infoReducer(state: IInfoState = defaultState, action: fromGameAc
     if (action.type === fromGameActions.ActionTypes.LoadGameInfoSuccess) {
         const info: IGameInfo = (action as fromGameActions.LoadGameInfoSuccess).payload;
         const id = info.id;
-        const playerOnTurn = info.playerOnTurn;
+        const playerOnTurnId = info.playerOnTurnId;
         const turn = info.turn;
 
-        return { ...state, id, playerOnTurn, turn };
+        return { ...state, id, playerOnTurnId, turn };
+    } else if (action.type === fromGameActions.ActionTypes.ChangeTurn) {
+        const info: IGameInfo = (action as fromGameActions.ChangeTurn).payload;
+        const playerOnTurnId = info.playerOnTurnId;
+        const turn = info.turn;
+
+        return { ...state, playerOnTurnId, turn };
     }
 
     return state;
