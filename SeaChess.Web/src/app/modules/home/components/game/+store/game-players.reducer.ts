@@ -41,6 +41,14 @@ export function playersReducer(state: IPlayersState = defaultState, action: from
         }
         
         return { ...state, entities: [ playerOnTurnCopy, playerNotOnTurn ] };
+    } else if (action.type === fromGameActions.ActionTypes.UploadEnemyMovements) {
+        let data: { playerId: string, movements: ICell[] } = (action as fromGameActions.UploadEnemyMovements).payload;
+
+        let enemy = state.entities.find(e => e.id == data.playerId);
+        enemy = { ...enemy, movements: data.movements };
+
+        let currentPlayer = state.entities.find(e => e.id != data.playerId);
+        return { ...state, entities: [currentPlayer, enemy]  }
     }
 
     return state;

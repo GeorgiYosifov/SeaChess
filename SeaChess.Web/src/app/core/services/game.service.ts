@@ -13,6 +13,8 @@ import { IconType } from 'src/app/modules/shared/models/game/player-icon-type';
 import * as fromGameSelectors from 'src/app/modules/home/components/game/+store/game.selectors';
 import { ICellView } from 'src/app/modules/shared/models/game/game-cell-view';
 import { JwtHelper } from './jwtHelper';
+import { ICell } from 'src/app/modules/shared/models/game/game-cell';
+import { IChangeTurnInfo } from 'src/app/modules/shared/models/game/change-turn-info';
 
 @Injectable()
 export class GameService {
@@ -52,22 +54,20 @@ export class GameService {
     }
 
     public addYourTurnListener() {
-        this.hubConnection.on('YourTurn', (playerId: string, turn: number) => {
-            const dataToModifyGameInfo: IGameInfo = {
-                id: this.getGameId(),
-                playerOnTurnId: playerId,
-                turn
-            };
-            this.changeGameInfo(dataToModifyGameInfo);
+        this.hubConnection.on('YourTurn', (changeTurnInfo: IChangeTurnInfo) => {    
+            this.changeGameInfo(changeTurnInfo);
+            this.uploadEnemyMovements(changeTurnInfo);
         });
     }
 
     public markCell(id: string): { iconType: IconType } {
         let iconType: IconType = IconType.None;
         let isMarked: boolean = true;
-        let playerForNextTurnId: string;
+        let playerForNextTurn: IPlayer;
+        let playerOnTurnId: string;
         this.storeGame.select(fromGameSelectors.getGamePlayerOnTurnInfo).subscribe((data: IPlayer) => {
             if (!data.movements.find(m => m.id == id)) {
+                playerOnTurnId = data.id;      
                 isMarked = false;
                 iconType = data.iconType;
 
@@ -76,26 +76,32 @@ export class GameService {
                     entities = data;
                 }).unsubscribe();
 
+                playerForNextTurn = entities.filter(e => e.id != playerOnTurnId)[0];
                 const dataToMarkCell = Object.assign({
                     markCellId: id,
-                    playerOnTurnId: data.id,
+                    playerOnTurnId: playerOnTurnId,
                     entities: entities
                 });
                 this.storeGame.dispatch(new fromGameActions.MarkCell(dataToMarkCell));
-
-                playerForNextTurnId = entities.filter(e => e.id != data.id)[0].id;
             }
         }).unsubscribe();
-
+    
         if (!isMarked) {
-            let dataToModifyGameInfo: IGameInfo = {
-                id: this.getGameId(),
-                playerOnTurnId: playerForNextTurnId,
-                turn: null
-            };
-            dataToModifyGameInfo = this.changeGameInfo(dataToModifyGameInfo);
+            let playerOnTurnMovements: ICell[];
+            this.storeGame.select(fromGameSelectors.getGamePlayerOnTurnInfo).subscribe((data: IPlayer) => {
+                playerOnTurnMovements = data.movements; 
+            }).unsubscribe();
 
-            this.hubConnection.invoke('ChangeTurn', dataToModifyGameInfo)
+            let dataToChangeTurn: IChangeTurnInfo = {
+                gameId: this.getGameId(),
+                turn: null,
+                playerOnNextTurnId: playerForNextTurn.id,
+                playerOnTurnId: playerOnTurnId,
+                playerOnTurnMovements: playerOnTurnMovements
+            };
+            dataToChangeTurn = this.changeGameInfo(dataToChangeTurn);
+
+            this.hubConnection.invoke('ChangeTurn', dataToChangeTurn)
                     .then((_) => console.log('Change Turn Successfully'))
                     .catch(err => console.log('Error Change Turn: ' + err));
         }
@@ -167,7 +173,7 @@ export class GameService {
         return cells;
     }
 
-    private getGameId() {
+    private getGameId(): string {
         let gameId: string;
 
         this.storeRouter.subscribe((data) => {
@@ -177,14 +183,29 @@ export class GameService {
         return gameId;
     }
 
-    private changeGameInfo(dataToChangeTurn: IGameInfo): IGameInfo {
+    private changeGameInfo(dataToChangeTurn: IChangeTurnInfo): IChangeTurnInfo {
         if (!dataToChangeTurn.turn) {
             this.storeGame.select(fromGameSelectors.getGameInfo).subscribe((gameInfo: IGameInfo) => {
                 dataToChangeTurn.turn = gameInfo.turn;
             }).unsubscribe();
         }
+
+        const dataToModifyGameInfo: IGameInfo = {
+            id: dataToChangeTurn.gameId,
+            playerOnTurnId: dataToChangeTurn.playerOnNextTurnId,
+            turn: dataToChangeTurn.turn
+        };
     
-        this.storeGame.dispatch(new fromGameActions.ChangeTurn(dataToChangeTurn));
+        this.storeGame.dispatch(new fromGameActions.ChangeGameInfoOnTurn(dataToModifyGameInfo));
         return dataToChangeTurn;
+    }
+
+    private uploadEnemyMovements(changeTurnInfo: IChangeTurnInfo) {
+        const dataToUploadEnemyMovements: { playerId: string, movements: ICell[] } = {
+            playerId: changeTurnInfo.playerOnTurnId,
+            movements: changeTurnInfo.playerOnTurnMovements
+        };
+
+        this.storeGame.dispatch(new fromGameActions.UploadEnemyMovements(dataToUploadEnemyMovements));
     }
 }

@@ -25,9 +25,9 @@ namespace SeaChess.Game.Hubs
             return this.gameService.GetGameInfo(gameId);
         }
 
-        public async Task ChangeTurn(GameInfoViewModel gameInfo)
+        public async Task ChangeTurn(ChangeTurnInfoViewModel changeTurnInfo)
         {
-            await Clients.OthersInGroup(gameInfo.Id).SendAsync("YourTurn", gameInfo.PlayerOnTurnId, gameInfo.Turn);
+            await Clients.OthersInGroup(changeTurnInfo.GameId).SendAsync("YourTurn", changeTurnInfo);
         }
 
         public override Task OnDisconnectedAsync(Exception exception)
