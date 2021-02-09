@@ -11,10 +11,10 @@ import { IGameInfo } from 'src/app/modules/shared/models/game/game-info';
 import { IPlayer } from 'src/app/modules/shared/models/game/game-player';
 import { IconType } from 'src/app/modules/shared/models/game/player-icon-type';
 import * as fromGameSelectors from 'src/app/modules/home/components/game/+store/game.selectors';
-import { ICellView } from 'src/app/modules/shared/models/game/game-cell-view';
 import { JwtHelper } from './jwtHelper';
 import { ICell } from 'src/app/modules/shared/models/game/game-cell';
 import { IChangeTurnInfo } from 'src/app/modules/shared/models/game/change-turn-info';
+import { BoardComponent } from 'src/app/modules/home/components/game/board/board.component';
 
 @Injectable()
 export class GameService {
@@ -25,7 +25,7 @@ export class GameService {
     public rendererCell: Renderer2;
     public rendererBoard: Renderer2;
 
-    constructor(private storeGame: Store<fromGameStore.IGameState>,
+    constructor(public storeGame: Store<fromGameStore.IGameState>,
         private storeRouter: Store<IRouterState>) { }
 
     public startConnection() {
@@ -53,10 +53,11 @@ export class GameService {
             .catch(err => console.log('Error while starting connection in game: ' + err));
     }
 
-    public addYourTurnListener() {
+    public addYourTurnListener(board: BoardComponent) {
         this.hubConnection.on('YourTurn', (changeTurnInfo: IChangeTurnInfo) => {    
             this.changeGameInfo(changeTurnInfo);
             this.uploadEnemyMovements(changeTurnInfo);
+            board.selectEnemyCells();
         });
     }
 
@@ -160,17 +161,6 @@ export class GameService {
                 this.storeGame.dispatch(new fromGameActions.LoadPlayersSuccess(players));
             })
             .catch(err => console.log('Error Get Players Info: ' + err));
-    }
-
-    private selectUsedCells(): { [iconType: string]: ICellView[] } {
-        let cells: { [iconType: string]: ICellView[] } = {};
-
-        this.storeGame.select(fromGameSelectors.getGameUsedCells).subscribe((data: ICellView[]) => {
-            cells['Cross'] = data.filter(c => c.iconType == IconType.Cross);
-            cells['Circle'] = data.filter(c => c.iconType == IconType.Circle);
-        }).unsubscribe();
-        
-        return cells;
     }
 
     private getGameId(): string {

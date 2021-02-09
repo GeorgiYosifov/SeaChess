@@ -12,7 +12,7 @@ import { IconType } from 'src/app/modules/shared/models/game/player-icon-type';
 export class CellComponent {
   public faIcon: any;
 
-  @ViewChild('td') td: ElementRef;
+  @ViewChild('td') private td: ElementRef;
   @Input() id: string;
 
   constructor(private gameService: GameService,
@@ -28,9 +28,13 @@ export class CellComponent {
   
   public markCell() {
     const result: { iconType: IconType } = this.gameService.markCell(this.id);
-    if (result.iconType == IconType.Cross) {
+    this.printCell(result.iconType);
+  }
+
+  public printCell(type: IconType) {
+    if (type == IconType.Cross) {
       this.faIcon = fasCross;
-    } else if (result.iconType == IconType.Circle) {
+    } else if (type == IconType.Circle) {
       this.faIcon = farCircle;
     }
   }
