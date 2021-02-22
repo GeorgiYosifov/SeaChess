@@ -1,0 +1,15 @@
+.player {
+    width: 150px;
+    height: auto;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: darkgray;
+}
+
+.player p {
+    margin-bottom: 2px;
+}
+
+.color-player {
+    background-color: green;
+}

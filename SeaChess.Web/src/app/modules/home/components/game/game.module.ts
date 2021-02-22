@@ -8,6 +8,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { CellComponent } from './cell/cell.component';
 import { BoardComponent } from './board/board.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { StatsComponent } from './stats/stats.component';
+import { MovementsComponent } from './movements/movements.component';
 
 const routes: Routes = [
   { path: '', component: GameComponent }
@@ -17,7 +19,9 @@ const routes: Routes = [
   declarations: [
     GameComponent,
     CellComponent,
-    BoardComponent
+    BoardComponent,
+    StatsComponent,
+    MovementsComponent
   ],
   imports: [
     CommonModule,

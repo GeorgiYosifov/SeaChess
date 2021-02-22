@@ -8,7 +8,6 @@ import { BoardComponent } from './board/board.component';
   styleUrls: ['./game.component.css']
 })
 export class GameComponent {
-
   @ViewChild(BoardComponent) board: BoardComponent;
 
   constructor(private gameService: GameService) { }
