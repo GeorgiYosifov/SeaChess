@@ -6,10 +6,10 @@
 
         public int Turn { get; set; }
 
+        public bool IsIncreasedScore { get; set; }
+
+        public PlayerViewModel PlayerOnTurn { get; set; }
+
         public string PlayerOnNextTurnId { get; set; }
-
-        public string PlayerOnTurnId { get; set; }
-
-        public MovementViewModel[] PlayerOnTurnMovements { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { GameService } from 'src/app/core/services/game.service';
 import * as fromGameSelectors from 'src/app/modules/home/components/game/+store/game.selectors';
+import { IconType } from 'src/app/modules/shared/models/game/player-icon-type';
 import { IPlayerStat } from 'src/app/modules/shared/models/game/player-stat';
 
 @Component({
@@ -12,7 +13,8 @@ export class StatsComponent {
   private defaultPlayer: IPlayerStat = {
     email: "",
     score: 0,
-    isOnTurn: false
+    isOnTurn: false,
+    iconType: IconType.None
   };
 
   public firstPlayer: IPlayerStat = this.defaultPlayer;
@@ -42,15 +44,23 @@ export class StatsComponent {
       return;
 
     if (this.firstPlayer.isOnTurn) {
-      this.renderer.addClass(this.firstPlayerElement.nativeElement, "color-player");
+      if (this.firstPlayer.iconType == IconType.Cross) {
+        this.renderer.setStyle(this.firstPlayerElement.nativeElement, "background-color", "red");
+      } else if (this.firstPlayer.iconType == IconType.Circle) {
+        this.renderer.setStyle(this.firstPlayerElement.nativeElement, "background-color", "green");
+      }
     } else {
-      this.renderer.removeClass(this.firstPlayerElement.nativeElement, "color-player");
+      this.renderer.removeStyle(this.firstPlayerElement.nativeElement, "background-color");
     }
 
     if (this.secondPlayer.isOnTurn) {
-      this.renderer.addClass(this.secondPlayerElement.nativeElement, "color-player");
+      if (this.secondPlayer.iconType == IconType.Cross) {
+        this.renderer.setStyle(this.secondPlayerElement.nativeElement, "background-color", "red");
+      } else if (this.secondPlayer.iconType == IconType.Circle) {
+        this.renderer.setStyle(this.secondPlayerElement.nativeElement, "background-color", "green");
+      }
     } else {
-      this.renderer.removeClass(this.secondPlayerElement.nativeElement, "color-player");
+      this.renderer.removeStyle(this.secondPlayerElement.nativeElement, "background-color");
     }
   }
 }

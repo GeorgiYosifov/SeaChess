@@ -27,8 +27,8 @@ export class CellComponent {
   }
   
   public markCell() {
-    const result: { iconType: IconType } = this.gameService.markCell(this.id);
-    this.printCell(result.iconType);
+    const iconType: IconType = this.gameService.markCell(this.id);
+    this.printCell(iconType);
   }
 
   public printCell(type: IconType) {

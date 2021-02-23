@@ -57,16 +57,14 @@ namespace SeaChess.Game.Services
                 .FirstOrDefault(g => g.Id == gameId);
         }
 
-        //public string GetEmailFromJwtToken(string token)
-        //{
-        //    var stream = token;
-        //    var handler = new JwtSecurityTokenHandler();
-        //    //var jsonToken = handler.ReadToken(stream);
-        //    var tokenS = handler.ReadToken(stream) as JwtSecurityToken;
-
-        //    var email = tokenS.Claims.First(claim => claim.Type == "email").Value;
-
-        //    return email;
-        //}
+        public async Task UploadGameInfo(string playerId, int playerScore)
+        {
+            var player = this.db.Players.FirstOrDefault(p => p.Id == playerId);
+            if (player != null)
+            {
+                player.Score = playerScore;
+                await this.db.SaveChangesAsync();
+            }
+        }
     }
 }

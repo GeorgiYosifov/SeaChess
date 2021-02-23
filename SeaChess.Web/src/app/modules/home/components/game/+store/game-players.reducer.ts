@@ -3,6 +3,7 @@ import { ICell } from "src/app/modules/shared/models/game/game-cell";
 import { IMarkCell } from "src/app/modules/shared/models/game/game-mark-cell";
 import { IPlayer } from "src/app/modules/shared/models/game/game-player";
 import { IShift } from "src/app/modules/shared/models/game/game-shift";
+import { IUploadEnemyInfo } from "src/app/modules/shared/models/game/upload-enemy-info";
 import * as fromGameActions from "./game.actions";
 
 export interface IPlayersState {
@@ -41,14 +42,14 @@ export function playersReducer(state: IPlayersState = defaultState, action: from
         }
         
         return { ...state, entities: [ playerOnTurnCopy, playerNotOnTurn ] };
-    } else if (action.type === fromGameActions.ActionTypes.UploadEnemyMovements) {
-        let data: { playerId: string, movements: ICell[] } = (action as fromGameActions.UploadEnemyMovements).payload;
+    } else if (action.type === fromGameActions.ActionTypes.UploadEnemyInfo) {
+        let data: IUploadEnemyInfo = (action as fromGameActions.UploadEnemyInfo).payload;
 
-        let enemy = state.entities.find(e => e.id == data.playerId);
-        enemy = { ...enemy, movements: data.movements };
+        let enemy: IPlayer = state.entities.find(e => e.id == data.id);
+        enemy = { ...enemy, score: data.score, movements: data.movements };
+        let current: IPlayer = state.entities.find(e => e.id != data.id);
 
-        let currentPlayer = state.entities.find(e => e.id != data.playerId);
-        return { ...state, entities: [currentPlayer, enemy]  }
+        return { ...state, entities: [current, enemy] }
     }
 
     return state;

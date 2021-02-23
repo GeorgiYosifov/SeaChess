@@ -10,6 +10,6 @@ namespace SeaChess.Game.Services
 
         GameViewModel GetGameInfo(string gameId);
 
-        //string GetEmailFromJwtToken(string token);
+        Task UploadGameInfo(string playerId, int playerScore);
     }
 }

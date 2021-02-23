@@ -3,6 +3,7 @@ import { ICell } from "src/app/modules/shared/models/game/game-cell";
 import { IGameInfo } from "src/app/modules/shared/models/game/game-info";
 import { IMarkCell } from "src/app/modules/shared/models/game/game-mark-cell";
 import { IPlayer } from "src/app/modules/shared/models/game/game-player";
+import { IUploadEnemyInfo } from "src/app/modules/shared/models/game/upload-enemy-info";
 
 export const ActionTypes = {
     LoadPlayers: '[Game] Load Players',
@@ -11,7 +12,7 @@ export const ActionTypes = {
     LoadGameInfoSuccess: '[Game] Load Game Info Success',
     MarkCell: '[Game] Mark Cell',
     ChangeGameInfoOnTurn: '[Game] Change Game Info On Turn',
-    UploadEnemyMovements: '[Game] Upload Enemy Movements'
+    UploadEnemyInfo: '[Game] Upload Enemy Info'
 };
 
 export class LoadPlayers implements IAction<null> {
@@ -44,9 +45,9 @@ export class ChangeGameInfoOnTurn implements IAction<IGameInfo> {
     constructor(public payload: IGameInfo) { }
 }
 
-export class UploadEnemyMovements implements IAction<{ playerId: string, movements: ICell[] }> {
-    type = ActionTypes.UploadEnemyMovements;
-    constructor(public payload: { playerId: string, movements: ICell[] }) { }
+export class UploadEnemyInfo implements IAction<IUploadEnemyInfo> {
+    type = ActionTypes.UploadEnemyInfo;
+    constructor(public payload: IUploadEnemyInfo) { }
 }
 
-export type Actions = LoadPlayers | LoadPlayersSuccess | LoadPlayersFailed | LoadGameInfoSuccess | MarkCell | ChangeGameInfoOnTurn | UploadEnemyMovements;
+export type Actions = LoadPlayers | LoadPlayersSuccess | LoadPlayersFailed | LoadGameInfoSuccess | MarkCell | ChangeGameInfoOnTurn | UploadEnemyInfo;

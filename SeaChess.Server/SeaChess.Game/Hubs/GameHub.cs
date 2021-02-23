@@ -27,6 +27,11 @@ namespace SeaChess.Game.Hubs
 
         public async Task ChangeTurn(ChangeTurnInfoViewModel changeTurnInfo)
         {
+            if (changeTurnInfo.IsIncreasedScore)
+            {
+                await this.gameService.UploadGameInfo(changeTurnInfo.PlayerOnTurn.Id, changeTurnInfo.PlayerOnTurn.Score);
+            }
+
             await Clients.OthersInGroup(changeTurnInfo.GameId).SendAsync("YourTurn", changeTurnInfo);
         }
 

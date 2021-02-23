@@ -1,7 +1,6 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { GameService } from 'src/app/core/services/game.service';
 import { CellComponent } from '../cell/cell.component';
-import * as fromGameSelectors from 'src/app/modules/home/components/game/+store/game.selectors';
 import { ICellView } from 'src/app/modules/shared/models/game/game-cell-view';
 
 @Component({
@@ -26,11 +25,9 @@ export class BoardComponent {
     this.gameService.setPlayerAbilities(cells);
   }
 
-  public selectEnemyCells() {
-    this.gameService.storeGame.select(fromGameSelectors.getGameEnemyPlayerLastMovement).subscribe((cell: ICellView) => {
-      this.cellComponents
-        .find(component => component.id == cell.id && !cell.alreadyInPoint)
-        .printCell(cell.iconType);
-    });
+  public selectEnemyCells(cell: ICellView) {
+    this.cellComponents
+      .find(component => component.id == cell.id)
+      .printCell(cell.iconType);
   }
 }

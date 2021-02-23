@@ -1,9 +1,9 @@
-import { ICell } from "./game-cell";
+import { IPlayer } from "./game-player";
 
 export interface IChangeTurnInfo {
     gameId: string;
     turn: number;
+    isIncreasedScore: boolean;
+    playerOnTurn: IPlayer;
     playerOnNextTurnId: string;
-    playerOnTurnId: string;
-    playerOnTurnMovements: ICell[];
 }
