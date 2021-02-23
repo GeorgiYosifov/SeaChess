@@ -3,7 +3,3 @@
 body#bootstrap-overrides #board {
     line-height: 0;
 }
-
-.noClick {
-    pointer-events: none;
-}

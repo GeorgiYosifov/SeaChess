@@ -1,4 +1,4 @@
-import { ElementRef, Injectable, Renderer2 } from '@angular/core';
+import { Injectable, Renderer2 } from '@angular/core';
 import * as signalR from '@aspnet/signalr';
 import { IHttpConnectionOptions } from '@aspnet/signalr';
 import { Store } from '@ngrx/store';
@@ -63,9 +63,15 @@ export class GameService {
         });
     }
 
-    public markCell(id: string): IconType {        
+    public markCell(id: string): IconType {      
+        let iconType: IconType = IconType.None;
+
         this.storeGame.select(fromGameSelectors.getGamePlayerOnTurnInfo).subscribe((playerOnTurn: IPlayer) => {
-            if (!playerOnTurn.movements.find(m => m.id == id)) {
+            const userId = this.decodedToken['id'];
+
+            if (userId == playerOnTurn.id 
+                && !playerOnTurn.movements.find(m => m.id == id)) {
+                
                 let entities: IPlayer[];
                 this.storeGame.select(fromGameSelectors.getGamePlayersEntities).subscribe((data: IPlayer[]) => {
                     entities = data;
@@ -82,6 +88,7 @@ export class GameService {
                 let playerOnTurnAfterMarking: IPlayer;
                 this.storeGame.select(fromGameSelectors.getGamePlayerOnTurnInfo).subscribe((data: IPlayer) => {
                     playerOnTurnAfterMarking = data;
+                    iconType = data.iconType;
                     if (playerOnTurn.score + 1 == playerOnTurnAfterMarking.score) {
                         isIncreasedScore = true;
                     }
@@ -103,27 +110,7 @@ export class GameService {
             }
         }).unsubscribe();
 
-        let iconType: IconType = IconType.None;
-        this.storeGame.select(fromGameSelectors.getGamePlayerOnTurnInfo).subscribe((data: IPlayer) => {
-            iconType = data.iconType;
-        }).unsubscribe();
-
         return iconType;
-    }
-
-    public setPlayerAbilities(cells: ElementRef[]) {
-        this.storeGame.select(fromGameSelectors.getGameInfo).subscribe((data: IGameInfo) => {
-            const userId = this.decodedToken['id'];
-            if (data.playerOnTurnId != userId) {
-                cells.forEach((cell: ElementRef) => {
-                    this.rendererCell.addClass(cell, 'noClick');
-                });
-            } else {
-                cells.forEach((cell: ElementRef) => {
-                    this.rendererCell.removeClass(cell, 'noClick');
-                });
-            }
-        });
     }
 
     public endConnection() {
@@ -211,7 +198,6 @@ export class GameService {
             id: lastMovement.id,
             iconType: changeTurnInfo.playerOnTurn.iconType
         };
-
-        board.selectEnemyCells(cell);
+        board.printEnemyLastMovement(cell);
     }
 }

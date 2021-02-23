@@ -28,7 +28,9 @@ export class CellComponent {
   
   public markCell() {
     const iconType: IconType = this.gameService.markCell(this.id);
-    this.printCell(iconType);
+    if (iconType != IconType.None) {
+      this.printCell(iconType);
+    }
   }
 
   public printCell(type: IconType) {
