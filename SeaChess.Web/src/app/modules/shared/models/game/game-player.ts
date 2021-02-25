@@ -7,4 +7,5 @@ export interface IPlayer {
     score: number;
     iconType: IconType;
     movements: ICell[];
+    time: number; //seconds
 }

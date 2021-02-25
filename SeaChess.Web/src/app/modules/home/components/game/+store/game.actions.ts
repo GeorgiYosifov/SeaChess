@@ -1,5 +1,4 @@
 import { IAction } from "src/app/modules/shared/action";
-import { ICell } from "src/app/modules/shared/models/game/game-cell";
 import { IGameInfo } from "src/app/modules/shared/models/game/game-info";
 import { IMarkCell } from "src/app/modules/shared/models/game/game-mark-cell";
 import { IPlayer } from "src/app/modules/shared/models/game/game-player";
@@ -12,7 +11,8 @@ export const ActionTypes = {
     LoadGameInfoSuccess: '[Game] Load Game Info Success',
     MarkCell: '[Game] Mark Cell',
     ChangeGameInfoOnTurn: '[Game] Change Game Info On Turn',
-    UploadEnemyInfo: '[Game] Upload Enemy Info'
+    UploadEnemyInfo: '[Game] Upload Enemy Info',
+    UpdatePlayerTime: '[Game] Update Player Time'
 };
 
 export class LoadPlayers implements IAction<null> {
@@ -50,4 +50,9 @@ export class UploadEnemyInfo implements IAction<IUploadEnemyInfo> {
     constructor(public payload: IUploadEnemyInfo) { }
 }
 
-export type Actions = LoadPlayers | LoadPlayersSuccess | LoadPlayersFailed | LoadGameInfoSuccess | MarkCell | ChangeGameInfoOnTurn | UploadEnemyInfo;
+export class UpdatePlayerTime implements IAction<{ playerId: string, time: number }> {
+    type = ActionTypes.UpdatePlayerTime;
+    constructor(public payload: { playerId: string, time: number }) { }
+}
+
+export type Actions = LoadPlayers | LoadPlayersSuccess | LoadPlayersFailed | LoadGameInfoSuccess | MarkCell | ChangeGameInfoOnTurn | UploadEnemyInfo | UpdatePlayerTime;

@@ -17,6 +17,7 @@ import { BoardComponent } from 'src/app/modules/home/components/game/board/board
 import { IUploadEnemyInfo } from 'src/app/modules/shared/models/game/upload-enemy-info';
 import { ICellView } from 'src/app/modules/shared/models/game/game-cell-view';
 import { ICell } from 'src/app/modules/shared/models/game/game-cell';
+import { StatsComponent } from 'src/app/modules/home/components/game/stats/stats.component';
 
 @Injectable()
 export class GameService {
@@ -24,6 +25,7 @@ export class GameService {
     private hubConnection: signalR.HubConnection;
     private decodedToken: object;
     private board: BoardComponent;
+    private stats: StatsComponent;
 
     public rendererCell: Renderer2;
     public rendererBoard: Renderer2;
@@ -56,8 +58,7 @@ export class GameService {
             .catch(err => console.log('Error while starting connection in game: ' + err));
     }
 
-    public addYourTurnListener(board: BoardComponent) {
-        this.board = board;
+    public addYourTurnListener() {
         this.hubConnection.on('YourTurn', (changeTurnInfo: IChangeTurnInfo) => {    
             this.changeGameInfo(changeTurnInfo);
             this.uploadEnemyInfo(changeTurnInfo);
@@ -66,6 +67,11 @@ export class GameService {
                 this.board.printPoint(changeTurnInfo.pointCells);
             }
         });
+    }
+
+    public attachReferencesOfComponents(board: BoardComponent, stats: StatsComponent) {
+        this.board = board;
+        this.stats = stats;
     }
 
     public markCell(id: string): IconType {      
@@ -86,7 +92,8 @@ export class GameService {
                     entities: entities
                 });
                 this.storeGame.dispatch(new fromGameActions.MarkCell(dataToMarkCell));
-
+                this.updatePlayerTime(playerOnTurn.id);
+                
                 let isIncreasedScore: boolean = false;
                 let pointCells: ICellView[] = [];
                 let playerOnTurnAfterMarking: IPlayer;
@@ -221,5 +228,19 @@ export class GameService {
 
         this.board.printPoint(pointCells);
         return pointCells;
+    }
+
+    private updatePlayerTime(playerId: string) {
+        let playerOnTurnTime: number;
+        if (playerId == this.stats.firstPlayer.id) {
+            playerOnTurnTime = this.stats.firstPlayer.time;
+        } else if (playerId = this.stats.secondPlayer.id) {
+            playerOnTurnTime = this.stats.secondPlayer.time;
+        }
+        const dataToUpdatePlayerTime: { playerId: string, time: number } = {
+            playerId: playerId,
+            time: playerOnTurnTime
+        }
+        this.storeGame.dispatch(new fromGameActions.UpdatePlayerTime(dataToUpdatePlayerTime));
     }
 }

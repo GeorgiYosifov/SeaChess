@@ -13,7 +13,6 @@ const defaultState: IInfoState = {
     turn: 0
 };
 
-//TODO
 export function infoReducer(state: IInfoState = defaultState, action: fromGameActions.Actions): IInfoState {
     if (action.type === fromGameActions.ActionTypes.LoadGameInfoSuccess) {
         const info: IGameInfo = (action as fromGameActions.LoadGameInfoSuccess).payload;

@@ -11,5 +11,7 @@
         public IconType IconType { get; set; }
 
         public CellViewModel[] Movements { get; set; }
+
+        public int Time { get; set; }
     }
 }

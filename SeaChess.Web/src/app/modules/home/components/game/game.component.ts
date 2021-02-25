@@ -1,6 +1,7 @@
 import { Component, HostListener, ViewChild } from '@angular/core';
 import { GameService } from 'src/app/core/services/game.service';
 import { BoardComponent } from './board/board.component';
+import { StatsComponent } from './stats/stats.component';
 
 @Component({
   selector: 'app-game',
@@ -9,6 +10,7 @@ import { BoardComponent } from './board/board.component';
 })
 export class GameComponent {
   @ViewChild(BoardComponent) board: BoardComponent;
+  @ViewChild(StatsComponent) stats: StatsComponent;
 
   constructor(private gameService: GameService) { }
 
@@ -17,7 +19,8 @@ export class GameComponent {
   }
 
   ngAfterViewInit() {
-    this.gameService.addYourTurnListener(this.board);
+    this.gameService.attachReferencesOfComponents(this.board, this.stats)
+    this.gameService.addYourTurnListener();
   }
 
   ngOnDestroy() {
