@@ -10,6 +10,6 @@
 
         public IconType IconType { get; set; }
 
-        public MovementViewModel[] Movements { get; set; }
+        public CellViewModel[] Movements { get; set; }
     }
 }

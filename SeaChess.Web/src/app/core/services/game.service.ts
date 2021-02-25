@@ -23,6 +23,7 @@ export class GameService {
     private readonly API_URL = environment.API_URL;
     private hubConnection: signalR.HubConnection;
     private decodedToken: object;
+    private board: BoardComponent;
 
     public rendererCell: Renderer2;
     public rendererBoard: Renderer2;
@@ -56,10 +57,14 @@ export class GameService {
     }
 
     public addYourTurnListener(board: BoardComponent) {
+        this.board = board;
         this.hubConnection.on('YourTurn', (changeTurnInfo: IChangeTurnInfo) => {    
             this.changeGameInfo(changeTurnInfo);
             this.uploadEnemyInfo(changeTurnInfo);
-            this.markEnemyLastMovement(changeTurnInfo, board);
+            this.markEnemyLastMovement(changeTurnInfo);
+            if (changeTurnInfo.isIncreasedScore) {
+                this.board.printPoint(changeTurnInfo.pointCells);
+            }
         });
     }
 
@@ -69,9 +74,7 @@ export class GameService {
         this.storeGame.select(fromGameSelectors.getGamePlayerOnTurnInfo).subscribe((playerOnTurn: IPlayer) => {
             const userId = this.decodedToken['id'];
 
-            if (userId == playerOnTurn.id 
-                && !playerOnTurn.movements.find(m => m.id == id)) {
-                
+            if (userId == playerOnTurn.id && !playerOnTurn.movements.find(m => m.id == id)) {
                 let entities: IPlayer[];
                 this.storeGame.select(fromGameSelectors.getGamePlayersEntities).subscribe((data: IPlayer[]) => {
                     entities = data;
@@ -85,12 +88,14 @@ export class GameService {
                 this.storeGame.dispatch(new fromGameActions.MarkCell(dataToMarkCell));
 
                 let isIncreasedScore: boolean = false;
+                let pointCells: ICellView[] = [];
                 let playerOnTurnAfterMarking: IPlayer;
                 this.storeGame.select(fromGameSelectors.getGamePlayerOnTurnInfo).subscribe((data: IPlayer) => {
                     playerOnTurnAfterMarking = data;
                     iconType = data.iconType;
                     if (playerOnTurn.score + 1 == playerOnTurnAfterMarking.score) {
                         isIncreasedScore = true;
+                        pointCells = this.getCellsForNewPoint(playerOnTurn.movements, playerOnTurnAfterMarking.movements, playerOnTurn.iconType);
                     }
                 }).unsubscribe();
                 let playerForNextTurnId: string = entities.filter(e => e.id != playerOnTurn.id)[0].id;
@@ -99,6 +104,7 @@ export class GameService {
                     gameId: this.getGameId(),
                     turn: null,
                     isIncreasedScore,
+                    pointCells,
                     playerOnTurn: playerOnTurnAfterMarking,
                     playerOnNextTurnId: playerForNextTurnId
                 };
@@ -188,7 +194,7 @@ export class GameService {
         this.storeGame.dispatch(new fromGameActions.UploadEnemyInfo(dataToUploadEnemyInfo));
     }
 
-    private markEnemyLastMovement(changeTurnInfo: IChangeTurnInfo, board: BoardComponent) {
+    private markEnemyLastMovement(changeTurnInfo: IChangeTurnInfo) {
         let movements = changeTurnInfo.playerOnTurn.movements;
         let lastMovement: ICell = movements[movements.length - 1] ?? null;
         if (lastMovement == null)
@@ -198,6 +204,22 @@ export class GameService {
             id: lastMovement.id,
             iconType: changeTurnInfo.playerOnTurn.iconType
         };
-        board.printEnemyLastMovement(cell);
+        this.board.printEnemyLastMovement(cell);
+    }
+
+    private getCellsForNewPoint(movements: ICell[], movementsAfterMarking: ICell[], iconType: IconType): ICellView[] {
+        let pointCells: ICellView[] = [];
+        for (let i = 0; i < movements.length; i++) {
+            if (movements[i].alreadyInPoint != movementsAfterMarking[i].alreadyInPoint) {
+                const cell: ICellView = { id: movementsAfterMarking[i].id, iconType };
+                pointCells.push(cell);
+            }
+        }
+        const lastMarkedCell: ICell = movementsAfterMarking[movementsAfterMarking.length - 1];
+        const cell: ICellView = { id: lastMarkedCell.id, iconType };
+        pointCells.push(cell);
+
+        this.board.printPoint(pointCells);
+        return pointCells;
     }
 }

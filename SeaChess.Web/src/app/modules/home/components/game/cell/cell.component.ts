@@ -41,6 +41,14 @@ export class CellComponent {
     }
   }
 
+  public colorizeCell(type: IconType) {
+    if (type == IconType.Cross) {
+      this.renderer.setStyle(this.td.nativeElement, "background", "red");
+    } else if (type == IconType.Circle) {
+      this.renderer.setStyle(this.td.nativeElement, "background", "green");
+    }
+  }
+
   private estimateCellContent() {
     const row: string = this.id[0];
     const col: string = this.id[1];

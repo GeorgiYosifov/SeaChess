@@ -24,4 +24,12 @@ export class BoardComponent {
       .find(component => component.id == cell.id)
       .printCell(cell.iconType);
   }
+
+  public printPoint(cells: ICellView[]) {
+    cells.forEach(c => {
+      this.cellComponents
+        .find(component => component.id == c.id)
+        .colorizeCell(c.iconType);
+    });
+  }
 }
