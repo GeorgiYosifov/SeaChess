@@ -20,14 +20,14 @@ export function playersReducer(state: IPlayersState = defaultState, action: from
 
         return { ...state, entities };
     } else if (action.type === fromGameActions.ActionTypes.MarkCell) {
-        let data: IMarkCell = (action as fromGameActions.MarkCell).payload;
-        let markCell: ICell = {
+        const data: IMarkCell = (action as fromGameActions.MarkCell).payload;
+        const markCell: ICell = {
             id: data.markCellId,
             alreadyInPoint: false
         };
 
-        let playerOnTurn: IPlayer = data.entities.find(e => e.id == data.playerOnTurnId);
-        let playerNotOnTurn: IPlayer = data.entities.find(e => e.id != data.playerOnTurnId);
+        const playerOnTurn: IPlayer = data.entities.find(e => e.id == data.playerOnTurnId);
+        const playerNotOnTurn: IPlayer = data.entities.find(e => e.id != data.playerOnTurnId);
 
         let playerOnTurnCopy: IPlayer = Object.assign({
             ...playerOnTurn,
@@ -41,18 +41,38 @@ export function playersReducer(state: IPlayersState = defaultState, action: from
             if (estimatedPoint) break; 
         }
         
-        return { ...state, entities: [ playerOnTurnCopy, playerNotOnTurn ] };
+        const entities = keepOrderInEntities(state.entities, playerOnTurnCopy, playerNotOnTurn);
+        return { ...state, entities };
     } else if (action.type === fromGameActions.ActionTypes.UploadEnemyInfo) {
-        let data: IUploadEnemyInfo = (action as fromGameActions.UploadEnemyInfo).payload;
+        const data: IUploadEnemyInfo = (action as fromGameActions.UploadEnemyInfo).payload;
 
+        const current: IPlayer = state.entities.find(e => e.id != data.id);
         let enemy: IPlayer = state.entities.find(e => e.id == data.id);
-        enemy = { ...enemy, score: data.score, movements: data.movements };
-        let current: IPlayer = state.entities.find(e => e.id != data.id);
+        enemy = { ...enemy, score: data.score, movements: data.movements, time: data.time }; 
 
-        return { ...state, entities: [current, enemy] }
+        const entities = keepOrderInEntities(state.entities, current, enemy);
+        return { ...state, entities };
+    } else if (action.type === fromGameActions.ActionTypes.UpdatePlayerTime) {
+        const data: { id: string, time: number } = (action as fromGameActions.UpdatePlayerTime).payload;
+
+        let current: IPlayer = state.entities.find(e => e.id == data.id);
+        current = { ...current, time: data.time };
+        const enemy: IPlayer = state.entities.find(e => e.id != data.id);
+
+        const entities = keepOrderInEntities(state.entities, current, enemy);
+        return { ...state, entities };
     }
 
     return state;
+}
+
+function keepOrderInEntities(entities: IPlayer[], current: IPlayer, enemy: IPlayer) {
+    let result: IPlayer[] = [null, null];
+    const currentIndex = entities.findIndex(e => e.id == current.id);
+    const enemyIndex = entities.findIndex(e => e.id == enemy.id);
+    result[currentIndex] = current;
+    result[enemyIndex] = enemy;
+    return result;
 }
 
 // Go through specific diagonal and search if the current cell has related cells

@@ -10,108 +10,129 @@ import { IPlayerStat } from 'src/app/modules/shared/models/game/player-stat';
   styleUrls: ['./stats.component.css']
 })
 export class StatsComponent {
-  private defaultPlayer: IPlayerStat = {
-    id: '',
-    email: '',
-    score: 0,
-    isOnTurn: false,
-    iconType: IconType.None,
-    time: 5 * 60
-  };
+  @ViewChild('firstPlayerElement') private firstPlayerElement: ElementRef;
+  @ViewChild('firstPlayerTimer') private firstPlayerTimerElement: ElementRef;  
+  @ViewChild('secondPlayerElement') private secondPlayerElement: ElementRef;
+  @ViewChild('secondPlayerTimer') private secondPlayerTimerElement: ElementRef;
 
-  public firstPlayer: IPlayerStat = this.defaultPlayer;
-  public secondPlayer: IPlayerStat = this.defaultPlayer;
+  private iconTypeColor: { [key in IconType]: string } = ['none', 'red', 'green'];
 
-  @ViewChild('player1') private firstPlayerElement: ElementRef;
-  @ViewChild('player2') private secondPlayerElement: ElementRef;
-  @ViewChild('player1Timer') private firstPlayerTimerElement: ElementRef;
-  @ViewChild('player2Timer') private secondPlayerTimerElement: ElementRef;
+  public stopTimer: { value: boolean } = { value: false };
+  public firstPlayer: IPlayerStat;
+  public secondPlayer: IPlayerStat;
 
   constructor(private gameService: GameService,
-    private renderer: Renderer2) {
-      this.uploadPlayersStat();
-  }
+    private renderer: Renderer2) { }
 
   public uploadPlayersStat() {
-    this.gameService.storeGame.select(fromGameSelectors.getGamePlayersStat).subscribe((players: IPlayerStat[]) => {
-      if (players.length == 0) 
+    this.gameService.storeGame.select(fromGameSelectors.getGamePlayersStat).subscribe((data: IPlayerStat[]) => {
+      if (data.length == 0)
         return;
 
-      this.firstPlayer = players[0];
-      this.secondPlayer = players[1];
-      this.changeBackgroundColor();
-      this.startTimer();
-    });
+      this.firstPlayer = data[0];
+      this.secondPlayer = data[1];
+      this.changeBackgroundColor(true);
+      this.setEachPlayerTimer(true);
+    }).unsubscribe();
   }
 
-  public changeBackgroundColor() {
-    if (this.firstPlayerElement == undefined || this.secondPlayerElement == undefined)
-      return;
+  public changeBackgroundColor(onPlayerOnTurn: boolean) {
+    if (onPlayerOnTurn) {
+      if (this.firstPlayer.isOnTurn) {
+        this.renderer.setStyle(this.firstPlayerElement.nativeElement, "background-color", this.iconTypeColor[this.firstPlayer.iconType]);
+      } else {
+        this.renderer.removeStyle(this.firstPlayerElement.nativeElement, "background-color");
+      }
 
-    if (this.firstPlayer.isOnTurn) {
-      if (this.firstPlayer.iconType == IconType.Cross) {
-        this.renderer.setStyle(this.firstPlayerElement.nativeElement, "background-color", "red");
-      } else if (this.firstPlayer.iconType == IconType.Circle) {
-        this.renderer.setStyle(this.firstPlayerElement.nativeElement, "background-color", "green");
+      if (this.secondPlayer.isOnTurn) {
+        this.renderer.setStyle(this.secondPlayerElement.nativeElement, "background-color", this.iconTypeColor[this.secondPlayer.iconType]);
+      } else {
+        this.renderer.removeStyle(this.secondPlayerElement.nativeElement, "background-color");
       }
     } else {
-      this.renderer.removeStyle(this.firstPlayerElement.nativeElement, "background-color");
-    }
+      if (!this.firstPlayer.isOnTurn) {
+        this.renderer.setStyle(this.firstPlayerElement.nativeElement, "background-color", this.iconTypeColor[this.firstPlayer.iconType]);
+      } else {
+        this.renderer.removeStyle(this.firstPlayerElement.nativeElement, "background-color");
+      }
+      
+      if (!this.secondPlayer.isOnTurn) {
+        this.renderer.setStyle(this.secondPlayerElement.nativeElement, "background-color", this.iconTypeColor[this.secondPlayer.iconType]);
+      } else {
+        this.renderer.removeStyle(this.secondPlayerElement.nativeElement, "background-color");
+      }
+    }   
+  }
 
-    if (this.secondPlayer.isOnTurn) {
-      if (this.secondPlayer.iconType == IconType.Cross) {
-        this.renderer.setStyle(this.secondPlayerElement.nativeElement, "background-color", "red");
-      } else if (this.secondPlayer.iconType == IconType.Circle) {
-        this.renderer.setStyle(this.secondPlayerElement.nativeElement, "background-color", "green");
+  public setEachPlayerTimer(startTimerOfPlayerOnTurn: boolean) {
+    this.stopTimer.value = false;
+
+    if (startTimerOfPlayerOnTurn) {
+      if (this.firstPlayer.isOnTurn) {
+        this.startTimer(this.firstPlayer, this.firstPlayerTimerElement);
+        this.printTime(this.renderer, this.secondPlayerTimerElement, this.getTimeToString(this.secondPlayer.time));
+      } else if (this.secondPlayer.isOnTurn) {
+        this.startTimer(this.secondPlayer, this.secondPlayerTimerElement);
+        this.printTime(this.renderer, this.firstPlayerTimerElement, this.getTimeToString(this.firstPlayer.time));
       }
     } else {
-      this.renderer.removeStyle(this.secondPlayerElement.nativeElement, "background-color");
+      if (!this.firstPlayer.isOnTurn) {
+        this.startTimer(this.firstPlayer, this.firstPlayerTimerElement);
+        this.printTime(this.renderer, this.secondPlayerTimerElement, this.getTimeToString(this.secondPlayer.time));
+      } else if (!this.secondPlayer.isOnTurn) {
+        this.startTimer(this.secondPlayer, this.secondPlayerTimerElement);
+        this.printTime(this.renderer, this.firstPlayerTimerElement, this.getTimeToString(this.firstPlayer.time));
+      }
     }
   }
 
-  public startTimer() {
-    if (this.firstPlayer.isOnTurn) {
-      this.timerAction(this.firstPlayer.time, this.firstPlayerTimerElement);
-    } else if (this.secondPlayer.isOnTurn) {
-      this.timerAction(this.secondPlayer.time, this.secondPlayerTimerElement);
-    }
-  }
+  private startTimer(player: IPlayerStat, playerTimerElement: ElementRef) {
+    const interval: number = 1000; // ms
+    let expected: number = Date.now() + interval;
+    const endTime: number = Date.now() + player.time;
 
-  private async timerAction(playerTime: number, playerTimer: ElementRef) {
-    if (playerTime == 0) playerTime = 5 * 60;
-
-    const interval = 1000; // ms
-    const then = Date.now();
-    let expected = Date.now() + interval;
-    const renderer = this.renderer;
-    const gameService = this.gameService;
+    let stopTimer = this.stopTimer;
+    const renderer: Renderer2 = this.renderer;
+    const getTimeToString = this.getTimeToString;
     const printTime = this.printTime;
 
+    let stack: any;
     setTimeout(step, interval);
     function step() {
-      const dt = Date.now() - expected;
-
-      if (expected >= then + playerTime * 1000) {
-        console.log('HI THERE');
+      console.log(stopTimer.value);
+      if (expected >= endTime && stack != undefined) {
+        console.log('End game');
+        return stop();
+      }
+      if (stopTimer.value && stack != undefined) {
+        return stop();
       }
 
-      const remains = ((then + 60 * 1000) - expected) / 1000;
-      const value = printTime(remains);
-      renderer.setProperty(playerTimer.nativeElement, 'innerHTML', value);
-      
-      gameService.storeGame.select(fromGameSelectors.getGamePlayerOnTurnTime).subscribe((data: { playerId: string, time: number }) => {
-        return;
-      }).unsubscribe();
+      const dt = Date.now() - expected;
+      const remainingTime = endTime - expected; // ms
+      player.time = remainingTime;
+      printTime(renderer, playerTimerElement, getTimeToString(remainingTime));
       
       expected += interval;
-      setTimeout(step, Math.max(0, interval - dt)); // take into account drift
+      stack = setTimeout(step, Math.max(0, interval - dt)); // take into account drift
+    }
+
+    function stop() {
+      console.log('Stop timer');
+      stopTimer.value = false;
+      clearTimeout(stack);
+      stack = undefined;
     }
   }
 
-  public printTime(time: number): string {
-    const minutes = Math.floor(time / 60);
-    const seconds = (Math.round(time % 60)).toString();
-    return `${minutes}:${seconds.length == 2 ? seconds : '0' + seconds}`;
+  public getTimeToString(time: number): string {
+    const minutes = Math.floor(time / (60 * 1000));
+    const seconds = (Math.round((time / 1000) % 60)).toString();
+    return `${minutes}:${seconds.length > 1 ? seconds : '0' + seconds}`;
+  }
+
+  private printTime(renderer: Renderer2, playerTimerElement: ElementRef, timeToString: string) {
+    renderer.setProperty(playerTimerElement.nativeElement, 'innerHTML', timeToString);
   }
 }
 

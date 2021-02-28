@@ -1,12 +1,12 @@
 <div class="col-3">
-    <div #player1 class="player">
-        <p>{{firstPlayer.email}}</p>
-        <p>{{firstPlayer.score}}</p>
-        <p #player1Timer></p>
+    <div #firstPlayerElement class="player">
+        <p>{{this.firstPlayer?.email}}</p>
+        <p>{{this.firstPlayer?.score}}</p>
+        <p #firstPlayerTimer>{{getTimeToString(this.firstPlayer?.time)}}</p>
     </div>
-    <div #player2 class="player">
-        <p>{{secondPlayer.email}}</p>
-        <p>{{secondPlayer.score}}</p>
-        <p #player2Timer></p>
+    <div #secondPlayerElement class="player">
+        <p>{{this.secondPlayer?.email}}</p>
+        <p>{{this.secondPlayer?.score}}</p>
+        <p #secondPlayerTimer>{{getTimeToString(this.secondPlayer?.time)}}</p>
     </div>
 </div>

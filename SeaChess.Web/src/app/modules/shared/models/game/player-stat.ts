@@ -6,5 +6,5 @@ export interface IPlayerStat {
     score: number;
     isOnTurn: boolean;
     iconType: IconType;
-    time: number; //seconds
+    time: number; //ms
 }

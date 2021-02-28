@@ -33,6 +33,11 @@ export class GameService {
     constructor(public storeGame: Store<fromGameStore.IGameState>,
         private storeRouter: Store<IRouterState>) { }
 
+    public attachReferencesOfComponents(board: BoardComponent, stats: StatsComponent) {
+        this.board = board;
+        this.stats = stats;
+    }
+
     public startConnection() {
         const token = localStorage.getItem('token');
         this.decodedToken = JwtHelper.decodeToken(token);
@@ -59,28 +64,32 @@ export class GameService {
     }
 
     public addYourTurnListener() {
-        this.hubConnection.on('YourTurn', (changeTurnInfo: IChangeTurnInfo) => {    
+        this.hubConnection.on('YourTurn', (changeTurnInfo: IChangeTurnInfo) => { 
+            this.stats.stopTimer.value = true;
+            //this.stats.setEachPlayerTimer(false);
+
             this.changeGameInfo(changeTurnInfo);
             this.uploadEnemyInfo(changeTurnInfo);
             this.markEnemyLastMovement(changeTurnInfo);
             if (changeTurnInfo.isIncreasedScore) {
                 this.board.printPoint(changeTurnInfo.pointCells);
             }
+            this.stats.uploadPlayersStat();
         });
-    }
-
-    public attachReferencesOfComponents(board: BoardComponent, stats: StatsComponent) {
-        this.board = board;
-        this.stats = stats;
     }
 
     public markCell(id: string): IconType {      
         let iconType: IconType = IconType.None;
+        let alreadyCalled = false;
 
         this.storeGame.select(fromGameSelectors.getGamePlayerOnTurnInfo).subscribe((playerOnTurn: IPlayer) => {
             const userId = this.decodedToken['id'];
 
-            if (userId == playerOnTurn.id && !playerOnTurn.movements.find(m => m.id == id)) {
+            if (userId == playerOnTurn.id && !playerOnTurn.movements.find(m => m.id == id) && !alreadyCalled) {
+                alreadyCalled = true;
+                this.updatePlayerTime(playerOnTurn.id);
+                this.stats.stopTimer.value = true;
+
                 let entities: IPlayer[];
                 this.storeGame.select(fromGameSelectors.getGamePlayersEntities).subscribe((data: IPlayer[]) => {
                     entities = data;
@@ -92,7 +101,6 @@ export class GameService {
                     entities: entities
                 });
                 this.storeGame.dispatch(new fromGameActions.MarkCell(dataToMarkCell));
-                this.updatePlayerTime(playerOnTurn.id);
                 
                 let isIncreasedScore: boolean = false;
                 let pointCells: ICellView[] = [];
@@ -105,7 +113,7 @@ export class GameService {
                         pointCells = this.getCellsForNewPoint(playerOnTurn.movements, playerOnTurnAfterMarking.movements, playerOnTurn.iconType);
                     }
                 }).unsubscribe();
-                let playerForNextTurnId: string = entities.filter(e => e.id != playerOnTurn.id)[0].id;
+                let playerForNextTurnId: string = entities.filter(e => e.id != playerOnTurn.id)[0].id; 
 
                 let dataToChangeTurn: IChangeTurnInfo = {
                     gameId: this.getGameId(),
@@ -118,8 +126,13 @@ export class GameService {
                 dataToChangeTurn = this.changeGameInfo(dataToChangeTurn);
 
                 this.hubConnection.invoke('ChangeTurn', dataToChangeTurn)
-                        .then((_) => console.log('Change Turn Successfully'))
-                        .catch(err => console.log('Error Change Turn: ' + err));
+                    .then((_) => { 
+                        console.log('Change Turn Successfully');
+                        //this.stats.stopTimer.value = false;
+                        this.stats.setEachPlayerTimer(false);
+                        this.stats.changeBackgroundColor(false);
+                    })
+                    .catch(err => console.log('Error Change Turn: ' + err));
             }
         }).unsubscribe();
 
@@ -160,6 +173,8 @@ export class GameService {
 
                 this.storeGame.dispatch(new fromGameActions.LoadGameInfoSuccess(gameInfo));
                 this.storeGame.dispatch(new fromGameActions.LoadPlayersSuccess(players));
+
+                this.stats.uploadPlayersStat();
             })
             .catch(err => console.log('Error Get Players Info: ' + err));
     }
@@ -195,7 +210,8 @@ export class GameService {
         const dataToUploadEnemyInfo: IUploadEnemyInfo = {
             id: changeTurnInfo.playerOnTurn.id,
             score: changeTurnInfo.playerOnTurn.score,
-            movements: changeTurnInfo.playerOnTurn.movements
+            movements: changeTurnInfo.playerOnTurn.movements,
+            time: changeTurnInfo.playerOnTurn.time
         };
 
         this.storeGame.dispatch(new fromGameActions.UploadEnemyInfo(dataToUploadEnemyInfo));
@@ -237,8 +253,9 @@ export class GameService {
         } else if (playerId = this.stats.secondPlayer.id) {
             playerOnTurnTime = this.stats.secondPlayer.time;
         }
-        const dataToUpdatePlayerTime: { playerId: string, time: number } = {
-            playerId: playerId,
+
+        const dataToUpdatePlayerTime: { id: string, time: number } = {
+            id: playerId,
             time: playerOnTurnTime
         }
         this.storeGame.dispatch(new fromGameActions.UpdatePlayerTime(dataToUpdatePlayerTime));

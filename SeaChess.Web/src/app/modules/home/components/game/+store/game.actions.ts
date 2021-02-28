@@ -50,9 +50,9 @@ export class UploadEnemyInfo implements IAction<IUploadEnemyInfo> {
     constructor(public payload: IUploadEnemyInfo) { }
 }
 
-export class UpdatePlayerTime implements IAction<{ playerId: string, time: number }> {
+export class UpdatePlayerTime implements IAction<{ id: string, time: number }> {
     type = ActionTypes.UpdatePlayerTime;
-    constructor(public payload: { playerId: string, time: number }) { }
+    constructor(public payload: { id: string, time: number }) { }
 }
 
 export type Actions = LoadPlayers | LoadPlayersSuccess | LoadPlayersFailed | LoadGameInfoSuccess | MarkCell | ChangeGameInfoOnTurn | UploadEnemyInfo | UpdatePlayerTime;

@@ -9,10 +9,7 @@ const getPlayersEntities = (state: IGameState): IPlayer[] => state.players.entit
 const getPlayerOnTurnInfo = (gameInfo: IGameInfo, entities: IPlayer[]): IPlayer => {
     const playerOnTurnId = gameInfo.playerOnTurnId;
     return entities.find(e => e.id == playerOnTurnId);
-}
-const getPlayerOnTurnTime = (player: IPlayer): { playerId: string, time: number } => {
-    return { playerId: player.id, time: player.time } 
-}
+};
 const getPlayersStat = (gameInfo: IGameInfo, entities: IPlayer[]): IPlayerStat[] => {
     if (entities.length == 0)
         return [];
@@ -39,10 +36,9 @@ const getPlayersStat = (gameInfo: IGameInfo, entities: IPlayer[]): IPlayerStat[]
     };
 
     return [ firstPlayerStat, secondPlayerStat ];
-}
+};
 
 export const getGameInfo = createSelector(getGameState, getInfo);
 export const getGamePlayersEntities = createSelector(getGameState, getPlayersEntities);
 export const getGamePlayerOnTurnInfo = createSelector(getGameInfo, getGamePlayersEntities, getPlayerOnTurnInfo);
-export const getGamePlayerOnTurnTime = createSelector(getGamePlayerOnTurnInfo, getPlayerOnTurnTime);
 export const getGamePlayersStat = createSelector(getGameInfo, getGamePlayersEntities, getPlayersStat);
