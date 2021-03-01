@@ -64,31 +64,43 @@ export class GameService {
     }
 
     public addYourTurnListener() {
-        this.hubConnection.on('YourTurn', (changeTurnInfo: IChangeTurnInfo) => { 
-            this.stats.stopTimer.value = true;
-            //this.stats.setEachPlayerTimer(false);
-
+        this.hubConnection.on('YourTurn', (changeTurnInfo: IChangeTurnInfo) => {
+            const stopTimerPromise = new Promise((resolve) => {
+                this.stats.stopTimer.value = true;
+                setTimeout(() => {
+                    this.stats.stopTimer.value = false;
+                    resolve('stopped');
+                }, 1000); //must change
+            });
             this.changeGameInfo(changeTurnInfo);
             this.uploadEnemyInfo(changeTurnInfo);
             this.markEnemyLastMovement(changeTurnInfo);
             if (changeTurnInfo.isIncreasedScore) {
                 this.board.printPoint(changeTurnInfo.pointCells);
             }
-            this.stats.uploadPlayersStat();
+
+            stopTimerPromise.then(_ => {
+                this.stats.uploadPlayersStat();
+            });
         });
     }
 
     public markCell(id: string): IconType {      
         let iconType: IconType = IconType.None;
         let alreadyCalled = false;
-
         this.storeGame.select(fromGameSelectors.getGamePlayerOnTurnInfo).subscribe((playerOnTurn: IPlayer) => {
             const userId = this.decodedToken['id'];
-
             if (userId == playerOnTurn.id && !playerOnTurn.movements.find(m => m.id == id) && !alreadyCalled) {
                 alreadyCalled = true;
+
                 this.updatePlayerTime(playerOnTurn.id);
-                this.stats.stopTimer.value = true;
+                const stopTimerPromise = new Promise((resolve) => {
+                    this.stats.stopTimer.value = true;
+                    setTimeout(() => {
+                        this.stats.stopTimer.value = false;
+                        resolve('stopped');
+                    }, 1000); //must change
+                });
 
                 let entities: IPlayer[];
                 this.storeGame.select(fromGameSelectors.getGamePlayersEntities).subscribe((data: IPlayer[]) => {
@@ -125,14 +137,14 @@ export class GameService {
                 };
                 dataToChangeTurn = this.changeGameInfo(dataToChangeTurn);
 
-                this.hubConnection.invoke('ChangeTurn', dataToChangeTurn)
-                    .then((_) => { 
-                        console.log('Change Turn Successfully');
-                        //this.stats.stopTimer.value = false;
-                        this.stats.setEachPlayerTimer(false);
-                        this.stats.changeBackgroundColor(false);
-                    })
-                    .catch(err => console.log('Error Change Turn: ' + err));
+                stopTimerPromise.then(_ => {
+                    this.hubConnection.invoke('ChangeTurn', dataToChangeTurn)
+                        .then((_) => {
+                            console.log('Change Turn Successfully');
+                            this.stats.uploadPlayersStat();
+                        })
+                        .catch(err => console.log('Error Change Turn: ' + err));
+                });
             }
         }).unsubscribe();
 

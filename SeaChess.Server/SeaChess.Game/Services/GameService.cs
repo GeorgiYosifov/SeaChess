@@ -45,13 +45,15 @@ namespace SeaChess.Game.Services
                     {
                         Id = g.FirstPlayerId,
                         Email = g.FirstPlayer.Email,
-                        Score = g.FirstPlayer.Score
+                        Score = g.FirstPlayer.Score,
+                        Time = 5 * 60 * 1000 // 300 000ms or 5min
                     },
                     SecondPlayer = new PlayerViewModel()
                     {
                         Id = g.SecondPlayerId,
                         Email = g.SecondPlayer.Email,
-                        Score = g.SecondPlayer.Score
+                        Score = g.SecondPlayer.Score,
+                        Time = 5 * 60 * 1000 // 300 000ms or 5min
                     }
                 })
                 .FirstOrDefault(g => g.Id == gameId);

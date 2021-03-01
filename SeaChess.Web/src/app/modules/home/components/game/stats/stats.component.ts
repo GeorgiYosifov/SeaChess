@@ -31,58 +31,32 @@ export class StatsComponent {
 
       this.firstPlayer = data[0];
       this.secondPlayer = data[1];
-      this.changeBackgroundColor(true);
-      this.setEachPlayerTimer(true);
+      this.changeBackgroundColor();
+      this.setEachPlayerTimer();
     }).unsubscribe();
   }
 
-  public changeBackgroundColor(onPlayerOnTurn: boolean) {
-    if (onPlayerOnTurn) {
-      if (this.firstPlayer.isOnTurn) {
-        this.renderer.setStyle(this.firstPlayerElement.nativeElement, "background-color", this.iconTypeColor[this.firstPlayer.iconType]);
-      } else {
-        this.renderer.removeStyle(this.firstPlayerElement.nativeElement, "background-color");
-      }
-
-      if (this.secondPlayer.isOnTurn) {
-        this.renderer.setStyle(this.secondPlayerElement.nativeElement, "background-color", this.iconTypeColor[this.secondPlayer.iconType]);
-      } else {
-        this.renderer.removeStyle(this.secondPlayerElement.nativeElement, "background-color");
-      }
+  private changeBackgroundColor() {
+    if (this.firstPlayer.isOnTurn) {
+      this.renderer.setStyle(this.firstPlayerElement.nativeElement, "background-color", this.iconTypeColor[this.firstPlayer.iconType]);
     } else {
-      if (!this.firstPlayer.isOnTurn) {
-        this.renderer.setStyle(this.firstPlayerElement.nativeElement, "background-color", this.iconTypeColor[this.firstPlayer.iconType]);
-      } else {
-        this.renderer.removeStyle(this.firstPlayerElement.nativeElement, "background-color");
-      }
-      
-      if (!this.secondPlayer.isOnTurn) {
-        this.renderer.setStyle(this.secondPlayerElement.nativeElement, "background-color", this.iconTypeColor[this.secondPlayer.iconType]);
-      } else {
-        this.renderer.removeStyle(this.secondPlayerElement.nativeElement, "background-color");
-      }
-    }   
+      this.renderer.removeStyle(this.firstPlayerElement.nativeElement, "background-color");
+    }
+
+    if (this.secondPlayer.isOnTurn) {
+      this.renderer.setStyle(this.secondPlayerElement.nativeElement, "background-color", this.iconTypeColor[this.secondPlayer.iconType]);
+    } else {
+      this.renderer.removeStyle(this.secondPlayerElement.nativeElement, "background-color");
+    }  
   }
 
-  public setEachPlayerTimer(startTimerOfPlayerOnTurn: boolean) {
-    this.stopTimer.value = false;
-
-    if (startTimerOfPlayerOnTurn) {
-      if (this.firstPlayer.isOnTurn) {
-        this.startTimer(this.firstPlayer, this.firstPlayerTimerElement);
-        this.printTime(this.renderer, this.secondPlayerTimerElement, this.getTimeToString(this.secondPlayer.time));
-      } else if (this.secondPlayer.isOnTurn) {
-        this.startTimer(this.secondPlayer, this.secondPlayerTimerElement);
-        this.printTime(this.renderer, this.firstPlayerTimerElement, this.getTimeToString(this.firstPlayer.time));
-      }
-    } else {
-      if (!this.firstPlayer.isOnTurn) {
-        this.startTimer(this.firstPlayer, this.firstPlayerTimerElement);
-        this.printTime(this.renderer, this.secondPlayerTimerElement, this.getTimeToString(this.secondPlayer.time));
-      } else if (!this.secondPlayer.isOnTurn) {
-        this.startTimer(this.secondPlayer, this.secondPlayerTimerElement);
-        this.printTime(this.renderer, this.firstPlayerTimerElement, this.getTimeToString(this.firstPlayer.time));
-      }
+  private setEachPlayerTimer() {
+    if (this.firstPlayer.isOnTurn) {
+      this.startTimer(this.firstPlayer, this.firstPlayerTimerElement);
+      this.printTime(this.renderer, this.secondPlayerTimerElement, this.getTimeToString(this.secondPlayer.time));
+    } else if (this.secondPlayer.isOnTurn) {
+      this.startTimer(this.secondPlayer, this.secondPlayerTimerElement);
+      this.printTime(this.renderer, this.firstPlayerTimerElement, this.getTimeToString(this.firstPlayer.time));
     }
   }
 
@@ -98,13 +72,14 @@ export class StatsComponent {
 
     let stack: any;
     setTimeout(step, interval);
+
     function step() {
-      console.log(stopTimer.value);
       if (expected >= endTime && stack != undefined) {
         console.log('End game');
         return stop();
       }
       if (stopTimer.value && stack != undefined) {
+        console.log('Switch timer');
         return stop();
       }
 
@@ -117,10 +92,9 @@ export class StatsComponent {
       stack = setTimeout(step, Math.max(0, interval - dt)); // take into account drift
     }
 
-    function stop() {
-      console.log('Stop timer');
-      stopTimer.value = false;
+    function stop() {   
       clearTimeout(stack);
+      stopTimer.value = false;
       stack = undefined;
     }
   }
