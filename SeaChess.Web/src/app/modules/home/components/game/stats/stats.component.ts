@@ -16,8 +16,8 @@ export class StatsComponent {
   @ViewChild('secondPlayerTimer') private secondPlayerTimerElement: ElementRef;
 
   private iconTypeColor: { [key in IconType]: string } = ['none', 'red', 'green'];
+  private stackSetTimeout: { value: NodeJS.Timeout } = { value: undefined };
 
-  public stopTimer: { value: boolean } = { value: false };
   public firstPlayer: IPlayerStat;
   public secondPlayer: IPlayerStat;
 
@@ -29,6 +29,7 @@ export class StatsComponent {
       if (data.length == 0)
         return;
 
+      this.stopTimer(this.stackSetTimeout);
       this.firstPlayer = data[0];
       this.secondPlayer = data[1];
       this.changeBackgroundColor();
@@ -52,35 +53,30 @@ export class StatsComponent {
 
   private setEachPlayerTimer() {
     if (this.firstPlayer.isOnTurn) {
-      this.startTimer(this.firstPlayer, this.firstPlayerTimerElement);
+      this.startTimer(this.firstPlayer, this.firstPlayerTimerElement, this.stackSetTimeout);
       this.printTime(this.renderer, this.secondPlayerTimerElement, this.getTimeToString(this.secondPlayer.time));
     } else if (this.secondPlayer.isOnTurn) {
-      this.startTimer(this.secondPlayer, this.secondPlayerTimerElement);
+      this.startTimer(this.secondPlayer, this.secondPlayerTimerElement, this.stackSetTimeout);
       this.printTime(this.renderer, this.firstPlayerTimerElement, this.getTimeToString(this.firstPlayer.time));
     }
   }
 
-  private startTimer(player: IPlayerStat, playerTimerElement: ElementRef) {
+  private startTimer(player: IPlayerStat, playerTimerElement: ElementRef, stack: { value: any }) {
     const interval: number = 1000; // ms
     let expected: number = Date.now() + interval;
     const endTime: number = Date.now() + player.time;
 
-    let stopTimer = this.stopTimer;
     const renderer: Renderer2 = this.renderer;
     const getTimeToString = this.getTimeToString;
     const printTime = this.printTime;
+    const stopTimer = this.stopTimer;
 
-    let stack: any;
-    setTimeout(step, interval);
+    stack.value = setTimeout(step, interval);
 
     function step() {
-      if (expected >= endTime && stack != undefined) {
+      if (expected >= endTime) {
         console.log('End game');
-        return stop();
-      }
-      if (stopTimer.value && stack != undefined) {
-        console.log('Switch timer');
-        return stop();
+        return stopTimer(stack);
       }
 
       const dt = Date.now() - expected;
@@ -89,14 +85,13 @@ export class StatsComponent {
       printTime(renderer, playerTimerElement, getTimeToString(remainingTime));
       
       expected += interval;
-      stack = setTimeout(step, Math.max(0, interval - dt)); // take into account drift
+      stack.value = setTimeout(step, Math.max(0, interval - dt)); // take into account drift
     }
+  }
 
-    function stop() {   
-      clearTimeout(stack);
-      stopTimer.value = false;
-      stack = undefined;
-    }
+  private stopTimer(stack: { value: any }) {
+    clearTimeout(stack.value);
+    stack.value = undefined;
   }
 
   public getTimeToString(time: number): string {

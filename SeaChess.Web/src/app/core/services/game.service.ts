@@ -65,23 +65,13 @@ export class GameService {
 
     public addYourTurnListener() {
         this.hubConnection.on('YourTurn', (changeTurnInfo: IChangeTurnInfo) => {
-            const stopTimerPromise = new Promise((resolve) => {
-                this.stats.stopTimer.value = true;
-                setTimeout(() => {
-                    this.stats.stopTimer.value = false;
-                    resolve('stopped');
-                }, 1000); //must change
-            });
             this.changeGameInfo(changeTurnInfo);
             this.uploadEnemyInfo(changeTurnInfo);
             this.markEnemyLastMovement(changeTurnInfo);
             if (changeTurnInfo.isIncreasedScore) {
                 this.board.printPoint(changeTurnInfo.pointCells);
             }
-
-            stopTimerPromise.then(_ => {
-                this.stats.uploadPlayersStat();
-            });
+            this.stats.uploadPlayersStat();
         });
     }
 
@@ -92,15 +82,7 @@ export class GameService {
             const userId = this.decodedToken['id'];
             if (userId == playerOnTurn.id && !playerOnTurn.movements.find(m => m.id == id) && !alreadyCalled) {
                 alreadyCalled = true;
-
                 this.updatePlayerTime(playerOnTurn.id);
-                const stopTimerPromise = new Promise((resolve) => {
-                    this.stats.stopTimer.value = true;
-                    setTimeout(() => {
-                        this.stats.stopTimer.value = false;
-                        resolve('stopped');
-                    }, 1000); //must change
-                });
 
                 let entities: IPlayer[];
                 this.storeGame.select(fromGameSelectors.getGamePlayersEntities).subscribe((data: IPlayer[]) => {
@@ -137,14 +119,12 @@ export class GameService {
                 };
                 dataToChangeTurn = this.changeGameInfo(dataToChangeTurn);
 
-                stopTimerPromise.then(_ => {
-                    this.hubConnection.invoke('ChangeTurn', dataToChangeTurn)
-                        .then((_) => {
-                            console.log('Change Turn Successfully');
-                            this.stats.uploadPlayersStat();
-                        })
-                        .catch(err => console.log('Error Change Turn: ' + err));
-                });
+                this.hubConnection.invoke('ChangeTurn', dataToChangeTurn)
+                    .then((_) => {
+                        console.log('Change Turn Successfully');
+                        this.stats.uploadPlayersStat();
+                    })
+                    .catch(err => console.log('Error Change Turn: ' + err));
             }
         }).unsubscribe();
 
